@@ -2,14 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmationModal";
 import { NMTable } from "@/components/ui/core/NMTable/index";
 import TablePagination from "@/components/ui/core/NMTable/TablePagination";
+import { deleteProduct } from "@/services/Product";
 import { IMeta, IProduct } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Eye, Plus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import DiscountModal from "./DiscountModal";
 
 const ManageProducts = ({
@@ -21,14 +24,41 @@ const ManageProducts = ({
 }) => {
   const router = useRouter();
   const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const handleDelete = (data: IProduct) => {
+    console.log(data);
+    setSelectedId(data?._id);
+    setSelectedItem(data?.name);
+    setModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      if (selectedId) {
+        const res = await deleteProduct(selectedId);
+        console.log(res);
+        if (res.success) {
+          toast.success(res.message);
+          setModalOpen(false);
+        } else {
+          toast.error(res.message);
+        }
+      }
+    } catch (err: any) {
+      console.error(err?.message);
+    }
+  };
 
   const handleView = (product: IProduct) => {
     console.log("Viewing product:", product);
   };
 
-  const handleDelete = (productId: string) => {
-    console.log("Deleting product with ID:", productId);
-  };
+  // const handleDelete = (productId: string) => {
+  //   console.log("Deleting product with ID:", productId);
+  // };
 
   const columns: ColumnDef<IProduct>[] = [
     {
@@ -80,19 +110,9 @@ const ManageProducts = ({
       ),
     },
     {
-      accessorKey: "category",
-      header: "Category",
-      cell: ({ row }) => <span>{row.original.category.name}</span>,
-    },
-    {
-      accessorKey: "brand",
-      header: "Brand",
-      cell: ({ row }) => <span>{row.original.brand.name}</span>,
-    },
-    {
-      accessorKey: "stock",
-      header: "Stock",
-      cell: ({ row }) => <span>{row.original.stock}</span>,
+      accessorKey: "bedrooms",
+      header: "Bedrooms",
+      cell: ({ row }) => <span>{row.original.bedrooms}</span>,
     },
     {
       accessorKey: "price",
@@ -100,12 +120,10 @@ const ManageProducts = ({
       cell: ({ row }) => <span>$ {row.original.price.toFixed(2)}</span>,
     },
     {
-      accessorKey: "offerPrice",
-      header: "Ofter Price",
+      accessorKey: "location",
+      header: "Location",
       cell: ({ row }) => (
-        <span>
-          $ {row.original.offerPrice ? row.original.offerPrice.toFixed(2) : "0"}
-        </span>
+        <span>{row.original.location ? row.original.location : "-"}</span>
       ),
     },
     {
@@ -126,7 +144,7 @@ const ManageProducts = ({
             title="Edit"
             onClick={() =>
               router.push(
-                `/user/shop/products/update-product/${row.original._id}`
+                `/landlord/list/rental/update-product/${row.original._id}`
               )
             }
           >
@@ -134,9 +152,9 @@ const ManageProducts = ({
           </button>
 
           <button
-            className="text-gray-500 hover:text-red-500"
+            className="text-red-500"
             title="Delete"
-            onClick={() => handleDelete(row.original._id)}
+            onClick={() => handleDelete(row.original)}
           >
             <Trash className="w-5 h-5" />
           </button>
@@ -145,16 +163,18 @@ const ManageProducts = ({
     },
   ];
 
+  // console.log("again here", meta);
+
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Manage Products</h1>
+        <h1 className="text-xl font-bold">Manage Houses</h1>
         <div className="flex items-center gap-2">
           <Button
-            onClick={() => router.push("/user/shop/products/add-product")}
+            onClick={() => router.push("/landlord/list/rental/add-rental")}
             size="sm"
           >
-            Add Product <Plus />
+            Add Rental House <Plus />
           </Button>
           <DiscountModal
             selectedIds={selectedIds}
@@ -164,6 +184,12 @@ const ManageProducts = ({
       </div>
       <NMTable columns={columns} data={products || []} />
       <TablePagination totalPage={meta?.totalPage} />
+      <DeleteConfirmationModal
+        name={selectedItem}
+        isOpen={isModalOpen}
+        onOpenChange={setModalOpen}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };

@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,10 +9,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Link from "next/link";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
 import Logo from "@/app/assets/svgs/Logo";
+import { roles } from "@/constants/roles";
 import { useUser } from "@/context/UserContext";
 import { registerUser } from "@/services/AuthService";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,8 +44,10 @@ export default function RegisterForm() {
   const { setIsLoading } = useUser();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const modifiedData = { ...data, role: data?.role.toLowerCase() };
+
     try {
-      const res = await registerUser(data);
+      const res = await registerUser(modifiedData);
       setIsLoading(true);
       if (res?.success) {
         toast.success(res?.message);
@@ -49,6 +58,7 @@ export default function RegisterForm() {
     } catch (err: any) {
       console.error(err);
     }
+    // console.log("here", modifiedData);
   };
 
   return (
@@ -90,6 +100,36 @@ export default function RegisterForm() {
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="role"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Category</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select User Role" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {roles.map((role) => (
+                      <SelectItem key={role?._id} value={role?.name}>
+                        {role?.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={form.control}
             name="password"

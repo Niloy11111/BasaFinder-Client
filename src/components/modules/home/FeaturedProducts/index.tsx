@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
-import ProductCard from "@/components/ui/core/ProductCard";
+import CardTwo from "@/components/ui/CardTwo";
 import { getAllProducts } from "@/services/Product";
 import { IProduct } from "@/types";
 import Link from "next/link";
-
 const FeaturedProducts = async () => {
   const { data: products } = await getAllProducts();
 
@@ -19,11 +18,25 @@ const FeaturedProducts = async () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-5 gap-8 my-5">
+        <div className="flex">
+          <div className="p-4 w-full">
+            <div className="grid grid-cols-3 gap-5">
+              {products?.map((property: IProduct) => (
+                <CardTwo
+                  key={property._id}
+                  property={property}
+                  propertyLink={`/search/${property._id}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="grid grid-cols-5 gap-8 my-5">
           {products?.slice(0, 5).map((product: IProduct, idx: number) => (
             <ProductCard key={idx} product={product} />
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

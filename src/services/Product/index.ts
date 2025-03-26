@@ -1,4 +1,5 @@
 "use server";
+import { getValidToken } from "@/lib/verifyTokent";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -89,6 +90,26 @@ export const updateProduct = async (
         body: productData,
         headers: {
           Authorization: (await cookies()).get("accessToken")!.value,
+        },
+      }
+    );
+    revalidateTag("PRODUCT");
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const deleteProduct = async (productId: string): Promise<any> => {
+  const token = await getValidToken();
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: token,
         },
       }
     );

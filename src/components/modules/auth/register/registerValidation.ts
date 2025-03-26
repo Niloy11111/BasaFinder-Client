@@ -11,6 +11,7 @@ export const registrationSchema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .min(8, "Password must be at least 8 characters"),
+  role: z.string({ required_error: "Role is required" }),
   passwordConfirm: z
     .string({ required_error: "Password Confirmation is required" })
     .min(1),

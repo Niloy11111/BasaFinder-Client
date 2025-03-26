@@ -8,31 +8,28 @@ type Specification = {
 export interface IProduct {
   _id: string;
   name: string;
+  isParkingIncluded: boolean;
+  isPetsAllowed: boolean;
+  applicationFee: number;
+  location: string;
+  availableColors: string[];
+  slug: string;
   description: string;
   price: number;
-  stock: number;
-  weight: number;
-  category: {
-    _id: string;
-    name: string;
-  };
+  bedrooms: number;
   imageUrls: string[];
   isActive: boolean;
-  shop: {
-    _id: string;
-    shopName: string;
-  };
-  brand: {
-    _id: string;
-    name: string;
-  };
-  averageRating: number;
-  ratingCount: number;
-  availableColors: string[];
+  landlord: string;
+  numberOfReviews: number;
+  averageRating?: number;
+  ratingCount?: number;
   specification: Specification;
   keyFeatures: string[];
-  slug: string;
-  createdAt: string;
-  updatedAt: string;
-  offerPrice: number;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

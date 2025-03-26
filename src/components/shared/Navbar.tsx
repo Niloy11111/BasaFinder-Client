@@ -32,6 +32,8 @@ export default function Navbar() {
     }
   };
 
+  console.log("user", user);
+
   return (
     <header className="border-b bg-background w-full sticky top-0 z-10">
       <div className="container flex justify-between items-center mx-auto h-16 px-5">
@@ -68,14 +70,15 @@ export default function Navbar() {
                   <Avatar>
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>User</AvatarFallback>
-                  </Avatar>
+                  </Avatar>{" "}
+                  <div>{user.role}</div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href={`/${user?.role}/dashboard`}>Dashboard</Link>
+                    <Link href={`/${user?.role}/profile`}>Dashboard</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>My Shop</DropdownMenuItem>
                   <DropdownMenuSeparator />

@@ -1,42 +1,31 @@
-import { Settings, SquareTerminal } from "lucide-react";
+import { Hand, Settings, SquareTerminal } from "lucide-react";
 export const landlordPaths = [
   {
-    title: "My Profile landlord",
+    title: "My Profile",
     url: "/landlord/profile",
     icon: SquareTerminal,
     isActive: true,
   },
   {
     title: "Manage Listing",
-    url: "#",
+    url: "/landlord/list/rental",
     icon: Settings,
-    items: [
-      {
-        title: "My Listing",
-        url: "/landlord/list/rental",
-      },
-    ],
   },
   {
-    title: "Manage Requests",
-    url: "#",
+    title: "Applications",
+    url: "/landlord/applications",
+    icon: SquareTerminal,
+    isActive: true,
+  },
+
+  {
+    title: "Settings",
+    url: "/landlord/settings",
     icon: Settings,
-    items: [
-      {
-        title: "Rental Requests",
-        url: "/landlord/request",
-      },
-    ],
   },
   {
-    title: "Manage Payments",
-    url: "#",
-    icon: Settings,
-    items: [
-      {
-        title: "Approve Payments ",
-        url: "/landlord/request",
-      },
-    ],
+    title: "Go Home",
+    url: "/",
+    icon: Hand,
   },
 ];

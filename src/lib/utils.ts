@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { clsx, type ClassValue } from "clsx";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
@@ -6,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 export function formatEnumString(str: string) {
-  return str.replace(/([A-Z])/g, " $1").trim();
+  return str?.replace(/([A-Z])/g, " $1").trim();
 }
 
 export function formatPriceValue(value: number | null, isMin: boolean) {
@@ -19,13 +20,10 @@ export function formatPriceValue(value: number | null, isMin: boolean) {
   return isMin ? `$${value}+` : `<$${value}`;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function cleanParams(params: Record<string, any>): Record<string, any> {
   return Object.fromEntries(
     Object.entries(params).filter(
-      (
-        [_, value] // eslint-disable-line @typescript-eslint/no-unused-vars
-      ) =>
+      ([_, value]) =>
         value !== undefined &&
         value !== "any" &&
         value !== "" &&

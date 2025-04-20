@@ -11,22 +11,18 @@ import { AmenityEnum, HighlightEnum, PropertyTypeEnum } from "@/lib/constants";
 import { addProduct } from "@/services/Product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const NewProperty = () => {
-  // const [createProperty] = useCreatePropertyMutation();
-  // const { data: authUser } = useGetAuthUserQuery();
-  const [imageFiles, setImageFiles] = useState<File[] | []>([]);
-  const { user, setIsLoading } = useUser();
+  const { user } = useUser();
   const router = useRouter();
   const form = useForm<PropertyFormData>({
     resolver: zodResolver(propertySchema),
     defaultValues: {
       name: "",
       description: "",
-      price: 1000,
+      price: 7000,
       securityDeposit: 500,
       applicationFee: 100,
       isPetsAllowed: true,
@@ -37,11 +33,11 @@ const NewProperty = () => {
       beds: 1,
       baths: 1,
       squareFeet: 1000,
-      address: "",
-      city: "",
-      state: "",
-      country: "",
-      postalCode: "",
+      address: "Back Bay",
+      city: "Boston",
+      state: "MA",
+      country: "USA",
+      postalCode: "02116",
     },
   });
 
@@ -50,15 +46,18 @@ const NewProperty = () => {
   } = form;
 
   // data: PropertyFormData
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<PropertyFormData> = async (data) => {
+    const toastId = toast.loading("Property Creating... ");
     const formData = new FormData();
 
     const modifiedData = {
       ...data,
       landlord: user?.userId,
-      price: parseFloat(data.price),
-      bedrooms: parseFloat(data.bedrooms),
+      price: parseFloat(data?.price?.toString()),
+      beds: parseFloat(data?.beds?.toString()),
     };
+
+    // console.log("datasdf", modifiedData);
 
     formData.append("data", JSON.stringify(modifiedData));
 
@@ -80,13 +79,13 @@ const NewProperty = () => {
       const res = await addProduct(formData);
 
       if (res.success) {
-        toast.success(res.message);
-        router.push("/user/shop/products");
+        toast.success("Property Created", { id: toastId });
+        router.push("/landlord/list/rental");
       } else {
-        toast.error(res.message);
+        toast.error(res.message, { id: toastId });
       }
-    } catch (err: any) {
-      console.error(err);
+    } catch (err) {
+      toast.error(`Something went wrong ${err}`, { id: toastId });
     }
   };
 
@@ -121,7 +120,7 @@ const NewProperty = () => {
             <div className="space-y-6">
               <h2 className="text-lg font-semibold mb-4">Fees</h2>
               <CustomFormField
-                name="pricePerMonth"
+                name="price"
                 label="Price per Month"
                 type="number"
               />
@@ -198,6 +197,7 @@ const NewProperty = () => {
                   name="amenities"
                   label="Amenities"
                   type="select"
+                  multiple={true}
                   options={Object.keys(AmenityEnum).map((amenity) => ({
                     value: amenity,
                     label: amenity,
@@ -235,9 +235,14 @@ const NewProperty = () => {
               <h2 className="text-lg font-semibold mb-4">
                 Additional Information
               </h2>
-              <CustomFormField name="address" label="Address" />
+
+              <CustomFormField name="city" label="City" />
               <div className="flex justify-between gap-4">
-                <CustomFormField name="city" label="City" className="w-full" />
+                <CustomFormField
+                  name="address"
+                  label="Address"
+                  className="w-full"
+                />
                 <CustomFormField
                   name="state"
                   label="State"
@@ -256,7 +261,7 @@ const NewProperty = () => {
               type="submit"
               className="bg-primary-700 text-white w-full mt-8"
             >
-              {isSubmitting ? "Creating Property....." : "Created Property"}
+              {isSubmitting ? "Creating Property....." : "Create Property"}
             </Button>
           </form>
         </Form>

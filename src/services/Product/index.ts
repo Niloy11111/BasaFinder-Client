@@ -11,22 +11,39 @@ export const getAllProducts = async (
 ) => {
   const params = new URLSearchParams();
 
-  if (query?.price) {
-    params.append("minPrice", "0");
-    params.append("maxPrice", query?.price.toString());
-  }
+  // console.log("from ", query?.priceRange);
 
-  if (query?.category) {
-    params.append("categories", query?.category.toString());
+  if (query?.priceRange) {
+    const [min, max] = (query?.priceRange as string).split(",");
+    params.append("minPrice", min);
+    params.append("maxPrice", max);
   }
-  if (query?.brand) {
-    params.append("brands", query?.brand.toString());
+  if (query?.squareFeet) {
+    const [min, max] = (query?.squareFeet as string).split(",");
+    params.append("minSquareFeet", min);
+    params.append("maxSquareFeet", max);
   }
-  if (query?.rating) {
-    params.append("ratings", query?.rating.toString());
+  if (query?.location) {
+    params.append("location", query?.location.toString());
+  }
+  if (query?.beds) {
+    params.append("beds", query?.beds.toString());
+  }
+  if (query?.baths) {
+    params.append("baths", query?.baths.toString());
+  }
+  if (query?.propertyType) {
+    params.append("propertyType", query?.propertyType.toString());
+  }
+  if (query?.amenities) {
+    params.append("amenities", query?.amenities.toString());
+  }
+  if (query?.squareFeet) {
+    params.append("squareFeet", query?.squareFeet.toString());
   }
 
   try {
+    console.log("Before fetching data");
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/product?limit=${limit}&page=${page}&${params}`,
       {
@@ -35,6 +52,7 @@ export const getAllProducts = async (
         },
       }
     );
+    console.log("After fetching data");
     const data = await res.json();
     return data;
   } catch (error: any) {

@@ -1,3 +1,5 @@
+"use client";
+
 import { getCurrentUser } from "@/services/AuthService";
 import { IUser } from "@/types";
 import {
@@ -24,6 +26,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleUser = async () => {
     const user = await getCurrentUser();
+    console.log("user here", user);
     setUser(user);
     setIsLoading(false);
   };

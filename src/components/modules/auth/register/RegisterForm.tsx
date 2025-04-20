@@ -19,9 +19,10 @@ import {
 import Link from "next/link";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
-import Logo from "@/app/assets/svgs/Logo";
 import { roles } from "@/constants/roles";
 import { useUser } from "@/context/UserContext";
+import { setUser } from "@/redux/features/authSlice";
+import { useAppDispatch } from "@/redux/hook";
 import { registerUser } from "@/services/AuthService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -29,6 +30,7 @@ import { toast } from "sonner";
 import { registrationSchema } from "./registerValidation";
 
 export default function RegisterForm() {
+  const dispatch = useAppDispatch();
   const form = useForm({
     resolver: zodResolver(registrationSchema),
   });
@@ -44,42 +46,54 @@ export default function RegisterForm() {
   const { setIsLoading } = useUser();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Registering... ");
+
     const modifiedData = { ...data, role: data?.role.toLowerCase() };
 
     try {
       const res = await registerUser(modifiedData);
       setIsLoading(true);
       if (res?.success) {
-        toast.success(res?.message);
+        toast.success("Registered", { id: toastId });
+        dispatch(
+          setUser({ user: res?.data?.userData, token: res?.data?.accessToken })
+        );
         router.push("/");
       } else {
         toast.error(res?.message);
       }
-    } catch (err: any) {
-      console.error(err);
+    } catch (err) {
+      toast.error(`Something went wrong ${err}`, { id: toastId });
     }
     // console.log("here", modifiedData);
   };
 
+  // const handleClick = () => {
+  //   router.push("/");
+  // };
+
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-md w-full p-5">
+    <div className="border-2 border-gray-300 rounded-[8px] flex-grow max-w-md w-full p-5">
       <div className="flex items-center space-x-4 ">
-        <Logo />
+        <h1 className="text-5xl  font-light  border-b-4 border-r-4 border-r-secondary-500 pr-2">
+          R
+        </h1>
+
         <div>
           <h1 className="text-xl font-semibold">Register</h1>
           <p className="font-extralight text-sm text-gray-600">
-            Join us today and start your journey!
+            Welcome! Please sign up to continue
           </p>
         </div>
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel className="mt-8">Name</FormLabel>
                 <FormControl>
                   <Input {...field} value={field.value || ""} />
                 </FormControl>
@@ -92,9 +106,26 @@ export default function RegisterForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="">Email</FormLabel>
                 <FormControl>
                   <Input type="email" {...field} value={field.value || ""} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <FormControl>
+                  <Input
+                    type="phoneNumber"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -106,17 +137,17 @@ export default function RegisterForm() {
             name="role"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Category</FormLabel>
+                <FormLabel>Role</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full rounded-[8px]">
                       <SelectValue placeholder="Select User Role" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
+                  <SelectContent className="border-input">
                     {roles.map((role) => (
                       <SelectItem key={role?._id} value={role?.name}>
                         {role?.name}
@@ -163,9 +194,9 @@ export default function RegisterForm() {
           />
 
           <Button
-            disabled={passwordConfirm && password !== passwordConfirm}
+            disabled={!!passwordConfirm && password !== passwordConfirm}
             type="submit"
-            className="mt-5 w-full"
+            className="mt-5 w-full bg-[#2058e7]  rounded-[8px] hover:bg-[#4e7bee] cursor-pointer"
           >
             {isSubmitting ? "Registering...." : "Register"}
           </Button>

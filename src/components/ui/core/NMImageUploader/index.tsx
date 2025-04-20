@@ -35,7 +35,7 @@ const NMImageUploader = ({
   };
 
   return (
-    <div className={cn("flex flex-col items-center w-full gap-4", className)}>
+    <div className={cn("flex flex-col items-center gap-4", className)}>
       <Input
         id="image-upload"
         type="file"

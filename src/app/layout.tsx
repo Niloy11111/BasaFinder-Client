@@ -1,15 +1,19 @@
 import Providers from "@/providers/Providers";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
+const robotoMono = Roboto_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
@@ -26,9 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-arp="">
-      <body
-        className={`${geistSans.variable} ${geistMono.className} antialiased`}
-      >
+      <body className={` ${robotoMono.className} antialiased`}>
         <Providers>
           <Toaster richColors position="top-center" />
 

@@ -1,42 +1,29 @@
-import { Settings, SquareTerminal } from "lucide-react";
+import { Hand, Settings, SquareTerminal } from "lucide-react";
 export const adminPaths = [
   {
-    title: "My Profile sdfsd",
-    url: "/landlord/profile",
+    title: "My Profile",
+    url: "/admin/profile",
     icon: SquareTerminal,
     isActive: true,
   },
   {
-    title: "Manage Listing",
-    url: "#",
-    icon: Settings,
-    items: [
-      {
-        title: "My Listing",
-        url: "/landlord/list/rental",
-      },
-    ],
+    title: "Users Management",
+    url: "/admin/users",
+    icon: SquareTerminal,
   },
   {
-    title: "Manage Requests",
-    url: "#",
+    title: "Property Management",
+    url: "/admin/manage-property",
     icon: Settings,
-    items: [
-      {
-        title: "Rental Requests",
-        url: "/landlord/request",
-      },
-    ],
   },
   {
-    title: "Manage Payments",
-    url: "#",
+    title: "Settings",
+    url: "/admin/settings",
     icon: Settings,
-    items: [
-      {
-        title: "Approve Payments ",
-        url: "/landlord/request",
-      },
-    ],
+  },
+  {
+    title: "Go Home",
+    url: "/",
+    icon: Hand,
   },
 ];

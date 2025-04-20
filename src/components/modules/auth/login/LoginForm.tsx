@@ -1,6 +1,5 @@
 "use client";
 
-import Logo from "@/app/assets/svgs/Logo";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,28 +10,27 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useUser } from "@/context/UserContext";
-import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
+import { setUser } from "@/redux/features/authSlice";
+import { useAppDispatch } from "@/redux/hook";
+import { loginUser } from "@/services/AuthService";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { loginSchema } from "./loginValidation";
 
 export default function LoginForm() {
+  const dispatch = useAppDispatch();
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "ektiaruddinniloy859@gmail.com",
+      email: "example@gmail.com",
       password: "12345678",
     },
   });
 
-  const { setIsLoading } = useUser();
-
-  const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
+  // const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
 
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirectPath");
@@ -42,61 +40,59 @@ export default function LoginForm() {
     formState: { isSubmitting },
   } = form;
 
-  const handleReCaptcha = async (value: string | null) => {
-    try {
-      const res = await reCaptchaTokenVerification(value!);
-      if (res?.success) {
-        setReCaptchaStatus(true);
-      }
-    } catch (err: any) {
-      console.error(err);
-    }
-  };
+  // const handleReCaptcha = async (value: string | null) => {
+  //   try {
+  //     const res = await reCaptchaTokenVerification(value!);
+  //     if (res?.success) {
+  //       setReCaptchaStatus(true);
+  //     }
+  //   } catch (err: any) {
+  //     console.error(err);
+  //   }
+  // };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading("Logging in... ");
     try {
       const res = await loginUser(data);
-      setIsLoading(true);
+
       if (res?.success) {
-        toast.success(res?.message);
+        toast.success("Logged in", { id: toastId });
+        dispatch(
+          setUser({ user: res?.data?.userData, token: res?.data?.accessToken })
+        );
         if (redirect) {
           router.push(redirect);
         } else {
           router.push("/");
         }
       } else {
-        toast.error(res?.message);
+        toast.error(res.message, { id: toastId });
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
     }
   };
 
-  const defaultValue = {
-    email: "ektiaruddinniloy859@gmail.com",
-    password: "12345678",
-  };
-
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-md w-full p-5">
+    <div className="border-2 border-gray-300 rounded-[8px] flex-grow max-w-md w-full p-5">
       <div className="flex items-center space-x-4 ">
-        <Logo />
+        <h1 className="text-5xl  font-light  border-b-4 border-r-4 border-r-secondary-500 pr-2">
+          R
+        </h1>
         <div>
           <h1 className="text-xl font-semibold">Login</h1>
           <p className="font-extralight text-sm text-gray-600">Welcome back!</p>
         </div>
       </div>
       <Form {...form}>
-        <form
-          defaultValue={defaultValue}
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
+        <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="mt-8">Email</FormLabel>
                 <FormControl>
                   <Input type="email" {...field} value={field.value || ""} />
                 </FormControl>
@@ -129,7 +125,7 @@ export default function LoginForm() {
           <Button
             // disabled={reCaptchaStatus ? false : true}
             type="submit"
-            className="mt-5 w-full"
+            className="mt-5 w-full bg-[#2058e7]  rounded-[8px] hover:bg-[#4e7bee] cursor-pointer"
           >
             {isSubmitting ? "Logging...." : "Login"}
           </Button>

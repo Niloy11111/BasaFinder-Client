@@ -1,14 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmationModal";
 import { NMTable } from "@/components/ui/core/NMTable/index";
 import TablePagination from "@/components/ui/core/NMTable/TablePagination";
+import { useUser } from "@/context/UserContext";
 import { deleteProduct } from "@/services/Product";
-import { IMeta, IProduct } from "@/types";
+import { IProduct } from "@/types";
+import { IMeta } from "@/types/meta";
 import { ColumnDef } from "@tanstack/react-table";
-import { Edit, Eye, Plus, Trash } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -22,6 +23,7 @@ const ManageProducts = ({
   products: IProduct[];
   meta: IMeta;
 }) => {
+  const { user } = useUser();
   const router = useRouter();
   const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
   const [isModalOpen, setModalOpen] = useState(false);
@@ -29,31 +31,28 @@ const ManageProducts = ({
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const handleDelete = (data: IProduct) => {
-    console.log(data);
+    // console.log(data);
     setSelectedId(data?._id);
     setSelectedItem(data?.name);
     setModalOpen(true);
   };
 
   const handleDeleteConfirm = async () => {
+    const toastId = toast.loading("Property Deleting... ");
     try {
       if (selectedId) {
         const res = await deleteProduct(selectedId);
-        console.log(res);
+        // console.log(res);
         if (res.success) {
-          toast.success(res.message);
+          toast.success("Property Deleted", { id: toastId });
           setModalOpen(false);
         } else {
-          toast.error(res.message);
+          toast.error(res.message, { id: toastId });
         }
       }
-    } catch (err: any) {
-      console.error(err?.message);
+    } catch (err) {
+      toast.error(`Something went wrong ${err}`, { id: toastId });
     }
-  };
-
-  const handleView = (product: IProduct) => {
-    console.log("Viewing product:", product);
   };
 
   // const handleDelete = (productId: string) => {
@@ -65,10 +64,8 @@ const ManageProducts = ({
       id: "select",
       header: ({ table }) => (
         <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
+          // checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && ("indeterminate" as CheckedState))}
+
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
@@ -97,7 +94,7 @@ const ManageProducts = ({
       accessorKey: "name",
       header: "Product Name",
       cell: ({ row }) => (
-        <div className="flex items-center space-x-3">
+        <div className=" flex items-center space-x-3">
           <Image
             src={row.original.imageUrls[0]}
             alt={row.original.name}
@@ -105,25 +102,39 @@ const ManageProducts = ({
             height={40}
             className="w-8 h-8 rounded-full"
           />
-          <span className="truncate">{row.original.name}</span>
+          <span className="truncate">{row?.original?.name}</span>
         </div>
       ),
     },
     {
+      accessorKey: "squareFeet",
+      header: "Square Feet",
+      cell: ({ row }) => <span>{row?.original?.squareFeet}</span>,
+    },
+    {
       accessorKey: "bedrooms",
       header: "Bedrooms",
-      cell: ({ row }) => <span>{row.original.bedrooms}</span>,
+      cell: ({ row }) => <span>{row?.original?.beds}</span>,
+    },
+    {
+      accessorKey: "propertyType",
+      header: "Property Type",
+      cell: ({ row }) => <span>{row.original?.propertyType}</span>,
     },
     {
       accessorKey: "price",
       header: "Price",
-      cell: ({ row }) => <span>$ {row.original.price.toFixed(2)}</span>,
+      cell: ({ row }) => <span>$ {row.original?.price.toFixed(2)}</span>,
     },
     {
       accessorKey: "location",
       header: "Location",
       cell: ({ row }) => (
-        <span>{row.original.location ? row.original.location : "-"}</span>
+        <span>
+          {row.original.location
+            ? `${row.original?.location?.city},${row?.original?.location?.country}`
+            : "-"}
+        </span>
       ),
     },
     {
@@ -132,31 +143,29 @@ const ManageProducts = ({
       cell: ({ row }) => (
         <div className="flex items-center space-x-3">
           <button
-            className="text-gray-500 hover:text-blue-500"
-            title="View"
-            onClick={() => handleView(row.original)}
-          >
-            <Eye className="w-5 h-5" />
-          </button>
-
-          <button
-            className="text-gray-500 hover:text-green-500"
+            className="text-gray-500 cursor-pointer hover:text-green-500"
             title="Edit"
-            onClick={() =>
-              router.push(
-                `/landlord/list/rental/update-product/${row.original._id}`
-              )
-            }
+            onClick={() => {
+              if (user?.role === "admin") {
+                router.push(
+                  `/admin/manage-property/update-product/${row?.original?._id}`
+                );
+              } else {
+                router.push(
+                  `/landlord/list/rental/update-product/${row?.original?._id}`
+                );
+              }
+            }}
           >
-            <Edit className="w-5 h-5" />
+            <Edit className="w-8 h-8" />
           </button>
 
           <button
-            className="text-red-500"
+            className="text-red-500 cursor-pointer"
             title="Delete"
             onClick={() => handleDelete(row.original)}
           >
-            <Trash className="w-5 h-5" />
+            <Trash className="w-8 h-8" />
           </button>
         </div>
       ),
@@ -166,23 +175,25 @@ const ManageProducts = ({
   // console.log("again here", meta);
 
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Manage Houses</h1>
+    <div className="bg-white px-6 py-3 rounded">
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <h2 className="text-2xl font-bold mb-1">Properties Overview</h2>
+          <p className="text-sm text-gray-500">
+            Manage and view all properties.
+          </p>
+        </div>
         <div className="flex items-center gap-2">
-          <Button
-            onClick={() => router.push("/landlord/list/rental/add-rental")}
-            size="sm"
-          >
-            Add Rental House <Plus />
-          </Button>
           <DiscountModal
             selectedIds={selectedIds}
             setSelectedIds={setSelectedIds}
           />
         </div>
       </div>
+
+      <hr className=" border-t border-input" />
       <NMTable columns={columns} data={products || []} />
+      <hr className=" border-t border-input" />
       <TablePagination totalPage={meta?.totalPage} />
       <DeleteConfirmationModal
         name={selectedItem}

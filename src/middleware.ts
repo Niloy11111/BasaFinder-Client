@@ -6,7 +6,6 @@ type Role = keyof typeof roleBasedPrivateRoutes;
 const authRoutes = ["/login", "/register"];
 
 const roleBasedPrivateRoutes = {
-  user: [/^\/user/, /^\/create-shop/],
   admin: [/^\/admin/],
   landlord: [/^\/landlord/],
   tenant: [/^\/tenant/],
@@ -23,7 +22,7 @@ export default async function middleware(request: NextRequest) {
     } else {
       return NextResponse.redirect(
         new URL(
-          `http://localhost:3000/login?redirectPath=${pathname}`,
+          `https://basa-finder-client-two.vercel.app/login?redirectPath=${pathname}`,
           request.url
         )
       );
@@ -38,19 +37,20 @@ export default async function middleware(request: NextRequest) {
   }
 
   return NextResponse.redirect(new URL("/", request.url));
+
+  // if (userInfo && pathname === "/login") {
+  //   return NextResponse.next(); // Allow logged-in users to access /login
+  // }
 }
 
 export const config = {
   matcher: [
     "/login",
-    "/create-shop",
-    "/admin",
-    "/admin/:page",
+    "/admin/:path*",
+    "/admin/:path*",
     "/tenant",
-    "/tenant/:page",
+    "/tenant/:path",
     "/landlord",
-    "/landlord/:page",
-    "/user",
-    "/user/:page",
+    "/landlord/:path*",
   ],
 };

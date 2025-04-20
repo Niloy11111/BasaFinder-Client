@@ -8,20 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { addProduct } from "@/redux/features/cartSlice";
-import { useAppDispatch } from "@/redux/hook";
 
 import { IProduct } from "@/types";
-import { Heart, ShoppingCart, Star } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const ProductCard = ({ product }: { product: IProduct }) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const handleAddProduct = (product: IProduct) => {
-    dispatch(addProduct(product));
-  };
+  // const handleAddProduct = (product: IProduct) => {
+  //   dispatch(addProduct(product));
+  // };
 
   return (
     <Card className="p-3">
@@ -36,11 +34,11 @@ const ProductCard = ({ product }: { product: IProduct }) => {
           alt="product image"
           className="rounded-sm h-48 object-cover"
         />
-        {product?.stock === 0 && (
+        {/* {product?.stock === 0 && (
           <div className="absolute left-2 top-0 bg-red-500 text-white px-2 rounded-full">
             Out of Stock
           </div>
-        )}
+        )} */}
       </CardHeader>
 
       <CardContent className=" p-0 mt-2">
@@ -54,7 +52,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
               : product?.name}
           </CardTitle>
         </Link>
-
+        {/* 
         <div className="flex items-center justify-between my-2">
           <p className="text-sm text-gray-600">
             {product?.offerPrice ? (
@@ -79,13 +77,13 @@ const ProductCard = ({ product }: { product: IProduct }) => {
               {product?.averageRating}
             </span>
           </div>
-        </div>
+        </div> */}
       </CardContent>
 
       <CardFooter className="block p-0">
         <div className="flex gap-2 items-center justify-between">
           <Button
-            disabled={product?.stock === 0}
+            // disabled={product?.stock === 0}
             size="sm"
             variant="outline"
             className="w-32"
@@ -93,8 +91,8 @@ const ProductCard = ({ product }: { product: IProduct }) => {
             Buy Now
           </Button>
           <Button
-            onClick={() => handleAddProduct(product)}
-            disabled={product?.stock === 0}
+            // onClick={() => handleAddProduct(product)}
+            // disabled={product?.stock === 0}
             variant="outline"
             size="sm"
             className="w-8 h-8 p-0 flex items-center justify-center rounded-full"

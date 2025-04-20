@@ -1,7 +1,4 @@
-export interface HeaderProps {
-  title: string;
-  subtitle: string;
-}
+import { HeaderProps } from "@/types";
 
 const Header = ({ title, subtitle }: HeaderProps) => {
   return (

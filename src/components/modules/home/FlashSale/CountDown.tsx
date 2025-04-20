@@ -61,7 +61,7 @@ export default function CountDown() {
               {timeLeft[unit].toString().padStart(2, "0")}
             </span>
             <span className="text-sm">
-              {unit.charAt(0).toUpperCase() + unit.slice(1)}
+              {unit?.charAt(0)?.toUpperCase() + unit.slice(1)}
             </span>
           </div>
         </div>

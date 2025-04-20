@@ -51,6 +51,7 @@ interface FormFieldProps {
     | "switch"
     | "password"
     | "file"
+    | "fileOne"
     | "fileUpdate"
     | "multi-input";
   placeholder?: string;
@@ -64,21 +65,22 @@ interface FormFieldProps {
   multiple?: boolean;
   isIcon?: boolean;
   initialValue?: string | number | boolean | string[];
+  // existingsUrls: string[];
 }
 
 export const CustomFormField: React.FC<FormFieldProps> = ({
   name,
-  existingsUrls,
+  // existingsUrls,
   label,
   type = "text",
   placeholder,
   options,
-  accept,
+  // accept,
   className,
   inputClassName,
   labelClassName,
   disabled = false,
-  multiple = false,
+  // multiple = false,
   isIcon = false,
   initialValue,
 }) => {
@@ -136,25 +138,25 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
             </FormLabel>
           </div>
         );
-      case "fileUpdate":
-        return (
-          <FilePond
-            className={`${inputClassName}`}
-            files={
-              existingsUrls?.length
-                ? existingsUrls.map((url) => ({
-                    source: url,
-                    options: {
-                      type: "remote",
-                    },
-                  }))
-                : []
-            } // Ensure files are shown if existingsUrls is not empty
-            allowMultiple={true}
-            labelIdle={`Drag & Drop your images or <span class="filepond--label-action">Browse</span>`}
-            credits={false}
-          />
-        );
+      // case "fileUpdate":
+      //   return (
+      //     <FilePond
+      //       className={`${inputClassName}`}
+      //       files={
+      //         existingsUrls?.length
+      //           ? existingsUrls.map((url) => ({
+      //               source: url,
+      //               options: {
+      //                 type: "remote",
+      //               },
+      //             }))
+      //           : []
+      //       } // Ensure files are shown if existingsUrls is not empty
+      //       allowMultiple={true}
+      //       labelIdle={`Drag & Drop your images or <span class="filepond--label-action">Browse</span>`}
+      //       credits={false}
+      //     />
+      //   );
 
       case "file":
         return (
@@ -165,6 +167,18 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
               field.onChange(files);
             }}
             allowMultiple={true}
+            labelIdle={`Drag & Drop your images or <span class="filepond--label-action">Browse</span>`}
+            credits={false}
+          />
+        );
+      case "fileOne":
+        return (
+          <FilePond
+            onupdatefiles={(fileItems) => {
+              const files = fileItems.map((fileItem) => fileItem.file);
+              field.onChange(files[0]); // Single file only
+            }}
+            allowMultiple={false}
             labelIdle={`Drag & Drop your images or <span class="filepond--label-action">Browse</span>`}
             credits={false}
           />

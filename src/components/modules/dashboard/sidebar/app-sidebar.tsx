@@ -1,113 +1,45 @@
 "use client";
 
-import * as React from "react";
-
-import Logo from "@/app/assets/svgs/Logo";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useUser } from "@/context/UserContext";
+import { NAVBAR_HEIGHT } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { adminPaths } from "@/routes/admin.routes";
 import { landlordPaths } from "@/routes/landlord.routes";
 import { tenantsPaths } from "@/routes/tenant.routes";
+import { getCurrentUser } from "@/services/AuthService";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { NavMain } from "./nav-main";
-import { NavUser } from "./nav-user";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
-// const data = {
-//   navMain: [
-//     {
-//       title: "My Profile",
-//       url: "/landlord/profile",
-//       icon: SquareTerminal,
-//       isActive: true,
-//     },
-//     {
-//       title: "Manage Listing",
-//       url: "#",
-//       icon: Settings,
-//       items: [
-//         {
-//           title: "My Listing",
-//           url: "/landlord/list/rental",
-//         },
-//       ],
-//     },
-//     {
-//       title: "Manage Requests",
-//       url: "#",
-//       icon: Settings,
-//       items: [
-//         {
-//           title: "Rental Requests",
-//           url: "/landlord/request",
-//         },
-//       ],
-//     },
-//     {
-//       title: "Manage Payments",
-//       url: "#",
-//       icon: Settings,
-//       items: [
-//         {
-//           title: "Approve Payments ",
-//           url: "/landlord/request",
-//         },
-//       ],
-//     },
-//   ],
-//   navSecondary: [
-//     {
-//       title: "Support",
-//       url: "#",
-//       icon: LifeBuoy,
-//     },
-//     {
-//       title: "Feedback",
-//       url: "#",
-//       icon: Send,
-//     },
-//   ],
-//   projects: [
-//     {
-//       name: "Design Engineering",
-//       url: "#",
-//       icon: Frame,
-//     },
-//     {
-//       name: "Sales & Marketing",
-//       url: "#",
-//       icon: PieChart,
-//     },
-//     {
-//       name: "Travel",
-//       url: "#",
-//       icon: Map,
-//     },
-//   ],
-// };
+export function AppSidebar() {
+  const { user, setUser } = useUser();
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user, setIsLoading } = useUser();
+  const pathname = usePathname();
+  const { toggleSidebar, open } = useSidebar();
 
-  // const user = {
-  //   role: "landlord",
-  // };
-  // const router = useRouter();
-  // const pathname = usePathname();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getCurrentUser();
+        setUser(res);
+      } catch (err: any) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
 
-  // if (protectedRoutes.some((route) => pathname.match(route))) {
-  //   logout();
-  //   setIsLoading(true);
-  //   router.push("/login");
-  // }
-
+  console.log("ttoto", user);
   const userRole = {
     ADMIN: "admin",
     LANDLORD: "landlord",
@@ -147,30 +79,94 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   // sidebarItems = adminPaths;
 
+  // const isActive = pathname === link.href;
+
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar
+      collapsible="icon"
+      className="fixed left-0 bg-white shadow-lg"
+      style={{
+        top: `${NAVBAR_HEIGHT}px`,
+        height: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
+      }}
+    >
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="/">
-                <div className="flex items-center justify-center">
-                  <Logo />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <h2 className="font-bold text-xl">NextMart</h2>
-                </div>
-              </Link>
-            </SidebarMenuButton>
+            <div
+              className={cn(
+                "flex min-h-[56px] w-full items-center pt-3 mb-3",
+                open ? "justify-between px-6" : "justify-center"
+              )}
+            >
+              {open ? (
+                <>
+                  <h1 className="text-xl font-bold text-gray-800">
+                    {user?.role === "landlord"
+                      ? "Landlord View"
+                      : user?.role === "admin"
+                      ? "Admin View"
+                      : "Renter View"}
+                  </h1>
+                  <button
+                    className="hover:bg-gray-100 p-2 rounded-md"
+                    onClick={() => toggleSidebar()}
+                  >
+                    <X className="h-6 w-6 text-gray-600" />
+                  </button>
+                </>
+              ) : (
+                <button
+                  className="hover:bg-gray-100 p-2 rounded-md"
+                  onClick={() => toggleSidebar()}
+                >
+                  <Menu className="h-6 w-6 text-gray-600" />
+                </button>
+              )}
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
-        <NavMain items={sidebarItems} />
+        <SidebarMenu>
+          {sidebarItems?.map((link) => {
+            const isActive = pathname === link.url;
+
+            return (
+              <SidebarMenuItem key={link.url}>
+                <SidebarMenuButton
+                  asChild
+                  className={cn(
+                    "flex items-center px-7 py-7",
+                    isActive
+                      ? "bg-gray-100"
+                      : "text-gray-600 hover:bg-gray-100",
+                    open ? "text-blue-600" : "ml-[5px]"
+                  )}
+                >
+                  <Link href={link.url} className="w-full" scroll={false}>
+                    <div className="flex items-center gap-3">
+                      <link.icon
+                        className={`h-5 w-5 ${
+                          isActive ? "text-blue-600" : "text-gray-600"
+                        }`}
+                      />
+                      <span
+                        className={`font-medium ${
+                          isActive ? "text-blue-600" : "text-gray-600"
+                        }`}
+                      >
+                        {link.title}
+                      </span>
+                    </div>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
+        </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser />
-      </SidebarFooter>
     </Sidebar>
   );
 }

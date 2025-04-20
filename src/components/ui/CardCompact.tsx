@@ -11,7 +11,7 @@ const CardCompact = ({
   propertyLink,
 }: Record<string, any>) => {
   const [imgSrc, setImgSrc] = useState(
-    property.photoUrls?.[0] || "/placeholder.jpg"
+    property.imageUrls?.[0] || "/placeholder.jpg"
   );
 
   return (
@@ -73,7 +73,7 @@ const CardCompact = ({
           <div className="flex text-sm items-center">
             <Star className="w-3 h-3 text-yellow-400 mr-1" />
             <span className="font-semibold">
-              {property.averageRating.toFixed(1)}
+              {property.averageRating?.toFixed(1)}
             </span>
             <span className="text-gray-600 ml-1">
               ({property.numberOfReviews})
@@ -97,7 +97,7 @@ const CardCompact = ({
           </div>
 
           <p className="text-base font-bold">
-            ${property.pricePerMonth.toFixed(0)}
+            ${property.price?.toFixed(0)}
             <span className="text-gray-600 text-xs font-normal"> /mo</span>
           </p>
         </div>

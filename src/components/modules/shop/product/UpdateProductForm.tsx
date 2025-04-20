@@ -12,14 +12,11 @@ import { updateProduct } from "@/services/Product";
 import { IProduct } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 const UpdateProductForm = ({ product }: { product: IProduct }) => {
-  // const [createProperty] = useCreatePropertyMutation();
-  // const { data: authUser } = useGetAuthUserQuery();
-
-  const { user, setIsLoading } = useUser();
+  const { user } = useUser();
   const router = useRouter();
   const form = useForm<PropertyFormData>({
     resolver: zodResolver(propertySchema),
@@ -34,7 +31,7 @@ const UpdateProductForm = ({ product }: { product: IProduct }) => {
   // console.log("skdfj", product?.imageUrls);
 
   // data: PropertyFormData
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<PropertyFormData> = async (data) => {
     const toastId = toast.loading("Property Updating... ");
 
     const formData = new FormData();
@@ -42,8 +39,8 @@ const UpdateProductForm = ({ product }: { product: IProduct }) => {
     const modifiedData = {
       ...data,
       landlord: user?.userId,
-      price: parseFloat(data.price),
-      bedrooms: parseFloat(data.bedrooms),
+      price: parseFloat(data.price.toString()),
+      beds: parseFloat(data.beds.toString()),
     };
 
     formData.append("data", JSON.stringify(modifiedData));
@@ -67,12 +64,16 @@ const UpdateProductForm = ({ product }: { product: IProduct }) => {
 
       if (res.success) {
         toast.success("Property Updated", { id: toastId });
-        router.push("/landlord/list/rental");
+        if (user?.role === "landlord") {
+          router.push("/landlord/list/rental");
+        } else {
+          router.push("/admin/manage-property");
+        }
       } else {
         toast.error(res.message, { id: toastId });
       }
-    } catch (err: any) {
-      toast.error("Something went wrong", { id: toastId });
+    } catch (err) {
+      toast.error(`Something went wrong ${err}`, { id: toastId });
     }
   };
 
@@ -112,7 +113,7 @@ const UpdateProductForm = ({ product }: { product: IProduct }) => {
             <div className="space-y-6">
               <h2 className="text-lg font-semibold mb-4">Fees</h2>
               <CustomFormField
-                name="pricePerMonth"
+                name="price"
                 label="Price per Month"
                 type="number"
               />
@@ -226,28 +227,43 @@ const UpdateProductForm = ({ product }: { product: IProduct }) => {
               <h2 className="text-lg font-semibold mb-4">
                 Additional Information
               </h2>
-              <CustomFormField name="address" label="Address" />
+              <CustomFormField
+                name="address"
+                initialValue={product?.location?.address}
+                label="Address"
+              />
               <div className="flex justify-between gap-4">
-                <CustomFormField name="city" label="City" className="w-full" />
+                <CustomFormField
+                  name="city"
+                  label="City"
+                  className="w-full"
+                  initialValue={product?.location?.city}
+                />
                 <CustomFormField
                   name="state"
                   label="State"
                   className="w-full"
+                  initialValue={product?.location?.state}
                 />
                 <CustomFormField
                   name="postalCode"
                   label="Postal Code"
                   className="w-full"
+                  initialValue={product?.location?.postalCode}
                 />
               </div>
-              <CustomFormField name="country" label="Country" />
+              <CustomFormField
+                name="country"
+                label="Country"
+                initialValue={product?.location?.country}
+              />
             </div>
 
             <Button
               type="submit"
-              className="bg-primary-700 text-white w-full mt-8"
+              className="bg-primary-700 rounded text-white w-full mt-8"
             >
-              {isSubmitting ? "Creating Property....." : "Create Property"}
+              {isSubmitting ? "Updating Property....." : "Update Property"}
             </Button>
           </form>
         </Form>

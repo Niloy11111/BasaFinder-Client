@@ -24,15 +24,15 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogOut = () => {
-    logout();
+  const handleLogOut = async () => {
+    await logout();
     setIsLoading(true);
     if (protectedRoutes.some((route) => pathname.match(route))) {
       router.push("/");
     }
   };
 
-  console.log("user", user);
+  // console.log("user", user);
 
   return (
     <header className="border-b bg-background w-full sticky top-0 z-10">
@@ -71,14 +71,16 @@ export default function Navbar() {
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>User</AvatarFallback>
                   </Avatar>{" "}
-                  <div>{user.role}</div>
+                  <div>
+                    {user?.name} {user?.role}
+                  </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Profile</DropdownMenuItem>
                   <DropdownMenuItem>
-                    <Link href={`/${user?.role}/profile`}>Dashboard</Link>
+                    <Link href={`/${user?.role}/applications`}>Dashboard</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>My Shop</DropdownMenuItem>
                   <DropdownMenuSeparator />

@@ -1,17 +1,23 @@
-import Category from "@/components/modules/home/Category";
 import FeaturedProducts from "@/components/modules/home/FeaturedProducts";
-import FlashSale from "@/components/modules/home/FlashSale";
-import HeroSection from "@/components/modules/home/HeroSection";
-import TopBrands from "@/components/modules/home/TopBrands";
+import CallToActionSection from "@/components/modules/home/landing/CallToActionSection";
+import DiscoverSection from "@/components/modules/home/landing/DiscoverSection";
+import FeaturesSection from "@/components/modules/home/landing/FeaturesSection";
+import FooterSection from "@/components/modules/home/landing/FooterSection";
+import HeroSection from "@/components/modules/home/landing/HeroSection";
+import Testimonials from "@/components/modules/home/landing/Testimonials";
 
 const HomePage = () => {
   return (
-    <div>
+    <div className="bg-white">
       <HeroSection />
-      <Category />
+
       <FeaturedProducts />
-      <FlashSale />
-      <TopBrands />
+      <FeaturesSection />
+      <DiscoverSection />
+
+      <Testimonials />
+      <CallToActionSection />
+      <FooterSection />
     </div>
   );
 };

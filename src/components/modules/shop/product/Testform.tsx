@@ -1,333 +1,207 @@
 "use client";
-
+import UserRoleEditModal from "@/components/modules/user/UserRoleEditModal";
 import { Button } from "@/components/ui/button";
-import NMImageUploader from "@/components/ui/core/NMImageUploader";
-import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
+import Modal from "@/components/ui/core/modal/Modal";
+import Header from "@/components/ui/form/Header";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
-import {
-  FieldValues,
-  SubmitHandler,
-  useFieldArray,
-  useForm,
-} from "react-hook-form";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { updateUserStatus } from "@/services/User";
+import { IUser } from "@/types";
 
-import Logo from "@/app/assets/svgs/Logo";
-import { useUser } from "@/context/UserContext";
-import { getAllBrands } from "@/services/Brand";
-import { getAllCategories } from "@/services/Category";
-import { IBrand, ICategory } from "@/types";
-import { useRouter } from "next/navigation";
+import { ArrowDownToLine, Check, Download, Trash } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
 
-export default function TestForm() {
-  const [imageFiles, setImageFiles] = useState<File[] | []>([]);
-  const [imagePreview, setImagePreview] = useState<string[] | []>([]);
-  const [categories, setCategories] = useState<ICategory[] | []>([]);
-  const [brands, setBrands] = useState<IBrand[] | []>([]);
-  const { user, setIsLoading } = useUser();
-  const router = useRouter();
+const UsersPage = ({ users }: { users: IUser[] }) => {
+  const [userId, setUserId] = useState("");
 
-  const form = useForm({
-    defaultValues: {
-      name: "",
-      location: "",
-      description: "",
-      price: "",
-      bedrooms: "",
-      landlord: "",
-      keyFeatures: [{ value: "" }],
-      specification: [{ key: "", value: "" }],
-    },
-  });
+  const [openDelete, setOpenDelete] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
-  const {
-    formState: { isSubmitting },
-  } = form;
-
-  const { append: appendFeatures, fields: featureFields } = useFieldArray({
-    control: form.control,
-    name: "keyFeatures",
-  });
-
-  const addFeatures = () => {
-    appendFeatures({ value: "" });
+  const handleOpenDelete = (userId: string) => {
+    setOpenDelete(true);
+    setUserId(userId);
   };
 
-  const { append: appendSpec, fields: specFields } = useFieldArray({
-    control: form.control,
-    name: "specification",
-  });
-
-  const addSpec = () => {
-    appendSpec({ key: "", value: "" });
-  };
-
-  // console.log(specFields);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const [categoriesData, brandsData] = await Promise.all([
-        getAllCategories(),
-        getAllBrands(),
-      ]);
-
-      setCategories(categoriesData?.data);
-      setBrands(brandsData?.data);
+  const handleDeleteOrder = async (status: string) => {
+    const toastId = toast.loading("Deleting... ");
+    setOpenDelete(false);
+    const payload = {
+      isDeleted: status,
     };
-
-    fetchData();
-  }, []);
-
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const keyFeatures = data.keyFeatures.map(
-      (feature: { value: string }) => feature.value
-    );
-
-    const specification: { [key: string]: string } = {};
-    data.specification.forEach(
-      (item: { key: string; value: string }) =>
-        (specification[item.key] = item.value)
-    );
-
-    // console.log({ availableColors, keyFeatures, specification });
-
-    const modifiedData = {
-      ...data,
-      landlord: user?.userId,
-      keyFeatures,
-      specification,
-      price: parseFloat(data.price),
-      bedrooms: parseFloat(data.bedrooms),
-    };
-
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(modifiedData));
-
-    for (const file of imageFiles) {
-      formData.append("images", file);
+    try {
+      const res = await updateUserStatus(payload, userId);
+      if (res.success) {
+        toast.success("User Deleted", { id: toastId });
+      } else {
+        // console.log("delete", res);
+        toast.error(res.error.data.message, { id: toastId });
+      }
+    } catch (err) {
+      toast.error(`Something went wrong ${err}`, { id: toastId });
     }
+  };
 
-    console.log("now", await formData);
-    // try {
-    //   const res = await addProduct(formData);
-
-    //   if (res.success) {
-    //     toast.success(res.message);
-    //     router.push("/user/shop/products");
-    //   } else {
-    //     toast.error(res.message);
-    //   }
-    // } catch (err: any) {
-    //   console.error(err);
-    // }
+  const handleButtonClick = (user: IUser) => {
+    setIsModalOpen(true);
+    setSelectedUser(user);
   };
 
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-2xl p-5 ">
-      <div className="flex items-center space-x-4 mb-5 ">
-        <Logo />
+    <div className="dashboard-container">
+      <Header title={"Manage Users"} subtitle="Manage all users" />
 
-        <h1 className="text-xl font-bold">Add New Rental House</h1>
+      <div className="w-full space-y-6">
+        <div className="mt-8 bg-white rounded-xl shadow-md overflow-hidden p-6">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h2 className="text-2xl font-bold mb-1">Users Overview</h2>
+              <p className="text-sm text-gray-500">
+                Manage and view all users.
+              </p>
+            </div>
+            <div>
+              <button
+                className={`bg-white border border-gray-300 text-gray-700 py-2
+              px-4 rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50`}
+              >
+                <Download className="w-5 h-5 mr-2" />
+                <span>Download All</span>
+              </button>
+            </div>
+          </div>
+          <hr className=" border-t border-input" />
+
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>User</TableHead>
+                  <TableHead>User Role</TableHead>
+                  <TableHead>Monthly Rent</TableHead>
+                  <TableHead>Current Month Status</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>Action</TableHead>
+                  <TableHead>Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {users?.map((user) => (
+                  <TableRow key={user?._id || ""} className="h-24">
+                    <TableCell>
+                      <div className="flex items-center space-x-3">
+                        <Image
+                          src={user?.photo || ""}
+                          alt={user?.name}
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                        <div>
+                          <div className="font-semibold">{user?.name}</div>
+                          <div className="text-sm text-gray-500">
+                            {user?.email}
+                          </div>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <h1 className="max-w-[90px] border text-center py-1 border-input rounded">
+                        {user?.role?.toUpperCase()}
+                      </h1>
+                    </TableCell>
+                    <TableCell>
+                      <h1 className="  ">
+                        $500
+                        {/* {user?.rent?.toFixed(2)} */}
+                      </h1>
+                    </TableCell>
+                    <TableCell>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${"bg-green-100 text-green-800 border-green-300"}`}
+                      >
+                        <Check className="w-4 h-4 inline-block mr-1" />
+                        660f1b4c7a0b2e5f8
+                      </span>
+                    </TableCell>
+                    <TableCell>{user?.phoneNumber}</TableCell>
+                    <TableCell>
+                      <button
+                        onClick={() => handleButtonClick(user)}
+                        className={`cursor-pointer border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex 
+                      items-center justify-center font-semibold hover:bg-primary-700 hover:text-primary-50`}
+                      >
+                        <ArrowDownToLine className="w-4 h-4 mr-1" />
+                        Edit Role
+                      </button>
+                      <UserRoleEditModal
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        selectedUser={selectedUser as IUser}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <button
+                        onClick={() => handleOpenDelete(user?._id || "")}
+                        className={`cursor-pointer border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex 
+                      items-center justify-center font-semibold hover:bg-primary-700 hover:text-primary-50`}
+                      >
+                        <ArrowDownToLine className="w-4 h-4 mr-1" />
+                        Delete User
+                      </button>
+
+                      <div>
+                        <Modal
+                          open={openDelete}
+                          onClose={() => setOpenDelete(false)}
+                        >
+                          <div className="text-center ">
+                            <Trash size={46} className="mx-auto text-red-500" />
+                            <div className="mx-auto my-4 w-[400px]">
+                              <h3 className="text-lg font-black text-gray-800">
+                                Confirm Delete
+                              </h3>
+                              <p className="text-sm text-gray-500">
+                                Are you sure you want to delete this
+                              </p>
+                            </div>
+                            <div className="flex justify-center gap-4 ">
+                              <Button
+                                onClick={() => handleDeleteOrder("true")}
+                                variant="secondary"
+                                className="   bg-gray-100 py-2 rounded  px-7  "
+                              >
+                                Delete
+                              </Button>
+                              <Button
+                                variant="secondary"
+                                className="bg-gray-100    py-2 rounded  px-7  "
+                                onClick={() => setOpenDelete(false)}
+                              >
+                                Cancel
+                              </Button>
+                            </div>
+                          </div>
+                        </Modal>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
       </div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex justify-between items-center border-t border-b py-3 my-5">
-            <p className="text-primary font-bold text-xl">Basic Information</p>
-          </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Product Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="bedrooms"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Bedrooms</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Location</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="my-5">
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-36 resize-none"
-                      {...field}
-                      value={field.value || ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Images</p>
-            </div>
-            <div className="flex gap-4 ">
-              <NMImageUploader
-                setImageFiles={setImageFiles}
-                setImagePreview={setImagePreview}
-                label="Upload Image"
-                className="w-fit mt-0"
-              />
-              <ImagePreviewer
-                className="flex flex-wrap gap-4"
-                setImageFiles={setImageFiles}
-                imagePreview={imagePreview}
-                setImagePreview={setImagePreview}
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Key Features</p>
-              <Button
-                onClick={addFeatures}
-                variant="outline"
-                className="size-10"
-                type="button"
-              >
-                <Plus className="text-primary" />
-              </Button>
-            </div>
-
-            <div className="my-5">
-              {featureFields.map((featureField, index) => (
-                <div key={featureField.id}>
-                  <FormField
-                    control={form.control}
-                    name={`keyFeatures.${index}.value`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Key Feature {index + 1}</FormLabel>
-                        <FormControl>
-                          <Input {...field} value={field.value || ""} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Specification</p>
-              <Button
-                onClick={addSpec}
-                variant="outline"
-                className="size-10"
-                type="button"
-              >
-                <Plus className="text-primary" />
-              </Button>
-            </div>
-
-            {specFields.map((specField, index) => (
-              <div
-                key={specField.id}
-                className="grid grid-cols-1 gap-4 md:grid-cols-2 my-5"
-              >
-                <FormField
-                  control={form.control}
-                  name={`specification.${index}.key`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Feature name {index + 1}</FormLabel>
-                      <FormControl>
-                        <Input {...field} value={field.value || ""} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`specification.${index}.value`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Feature Description {index + 1}</FormLabel>
-                      <FormControl>
-                        <Input {...field} value={field.value || ""} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            ))}
-          </div>
-
-          <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Adding Product....." : "Add Product"}
-          </Button>
-        </form>
-      </Form>
     </div>
   );
-}
+};
+
+export default UsersPage;

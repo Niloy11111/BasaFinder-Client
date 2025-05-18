@@ -11,7 +11,7 @@
   --color-secondary-900: var(--secondary-900);
   --color-secondary-950: var(--secondary-950);
 }
-:root {
+/* :root {
   --secondary-50: #fefcfc;
   --secondary-100: #fdf2f2;
   --secondary-200: #fae1e1;
@@ -23,4 +23,17 @@
   --secondary-800: #7c1414;
   --secondary-900: #400a0a;
   --secondary-950: #2c0707;
+} */
+:root {
+  --secondary-50: #fffaeb;
+  --secondary-100: #fef0c7;
+  --secondary-200: #fde08a;
+  --secondary-300: #fdca4c;
+  --secondary-400: #fcb72b;
+  --secondary-500: #f6920a;
+  --secondary-600: #da6c05;
+  --secondary-700: #b54a08;
+  --secondary-800: #93390d;
+  --secondary-900: #78300f;
+  --secondary-950: #451703;
 }

@@ -15,7 +15,7 @@ const CardCompact = ({
   );
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-lg w-full flex h-40 mb-5">
+    <div className="bg-white rounded overflow-hidden shadow-lg w-full flex h-40 mb-5">
       <div className="relative w-1/3">
         <Image
           src={imgSrc}
@@ -41,19 +41,7 @@ const CardCompact = ({
       <div className="w-2/3 p-4 flex flex-col justify-between">
         <div>
           <div className="flex justify-between items-start">
-            <h2 className="text-xl font-bold mb-1">
-              {propertyLink ? (
-                <Link
-                  href={propertyLink}
-                  className="hover:underline hover:text-blue-600"
-                  scroll={false}
-                >
-                  {property.name}
-                </Link>
-              ) : (
-                property.name
-              )}
-            </h2>
+            <h2 className="text-xl font-bold mb-1">{property.name}</h2>
             {showFavoriteButton && (
               <button
                 className="bg-white rounded-full p-1"
@@ -95,6 +83,15 @@ const CardCompact = ({
               {property.squareFeet}
             </span>
           </div>
+
+          <Link href={propertyLink} className="" scroll={false}>
+            <button
+              className="cursor-pointer
+           rounded  hover:text-primary underline text-lg font-semibold"
+            >
+              Details
+            </button>
+          </Link>
 
           <p className="text-base font-bold">
             ${property.price?.toFixed(0)}

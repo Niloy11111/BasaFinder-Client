@@ -80,7 +80,7 @@
 }
 
 .slider-container .content .star {
-  color: #ff6f59;
+  color: #da6c05;
   font-size: 1.1rem;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .splide__pagination__page.is-active {
-  background-color: #ff6f59;
+  background-color: #da6c05;
 }
 
 .splide__arrow {

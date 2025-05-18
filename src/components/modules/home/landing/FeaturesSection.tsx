@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -45,20 +44,20 @@ const FeaturesSection = () => {
                 imageSrc={`/landing-search${3 - index}.png`}
                 title={
                   [
-                    "Trustworthy and Verified Listings",
-                    "Browse Rental Listings with Ease",
-                    "Simplify Your Rental Search with Advanced",
+                    "Reliable and Authenticated Homes",
+                    "Easily Explore Verified Rentals Today",
+                    "Make Your Rental Hunt Easy and Smarter",
                   ][index]
                 }
                 description={
                   [
-                    "Discover the best rental options with user reviews and ratings.",
-                    "Get access to user reviews and ratings for a better understanding of rental options.",
-                    "Find trustworthy and verified rental listings to ensure a hassle-free experience.",
+                    "Explore top rental choices backed by real reviews and ratings.",
+                    "Read real reviews and ratings to better understand your rental choices.",
+                    "Browse verified rental listings you can trust for a smooth, stress-free process.",
                   ][index]
                 }
                 linkText={["Explore", "Search", "Discover"][index]}
-                linkHref={["/explore", "/search", "/discover"][index]}
+                linkHref={["/search", "/search", "/search"][index]}
               />
             </motion.div>
           ))}
@@ -81,13 +80,13 @@ const FeatureCard = ({
   linkText: string;
   linkHref: string;
 }) => (
-  <div className="text-center">
-    <div className="p-4 rounded-lg mb-4 flex items-center justify-center h-48">
+  <div className="border rounded p-4 hover:shadow-lg">
+    <div className=" rounded-lg bg-secondary-20d0 mb-4 flex items-center justify-center h-56">
       <Image
         src={imageSrc}
         width={400}
         height={400}
-        className="w-full h-full object-contain"
+        className="w-full h-full rounded "
         alt={title}
       />
     </div>
@@ -95,7 +94,7 @@ const FeatureCard = ({
     <p className="mb-4">{description}</p>
     <Link
       href={linkHref}
-      className="inline-block border border-gray-300 rounded px-4 py-2 hover:bg-gray-100"
+      className=" flex bg-secondary-500 max-w-[110px] justify-center mx-auto border border-gray-300 rounded px-4 py-2 hover:bg-secondary-500/80"
       scroll={false}
     >
       {linkText}

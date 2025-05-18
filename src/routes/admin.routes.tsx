@@ -1,20 +1,20 @@
-import { Hand, Settings, SquareTerminal } from "lucide-react";
+import { House, Landmark, Settings, User, Users } from "lucide-react";
 export const adminPaths = [
   {
     title: "My Profile",
     url: "/admin/profile",
-    icon: SquareTerminal,
+    icon: User,
     isActive: true,
   },
   {
     title: "Users Management",
     url: "/admin/users",
-    icon: SquareTerminal,
+    icon: Users,
   },
   {
     title: "Property Management",
     url: "/admin/manage-property",
-    icon: Settings,
+    icon: Landmark,
   },
   {
     title: "Settings",
@@ -24,6 +24,6 @@ export const adminPaths = [
   {
     title: "Go Home",
     url: "/",
-    icon: Hand,
+    icon: House,
   },
 ];

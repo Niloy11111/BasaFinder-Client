@@ -53,6 +53,7 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Logging in... ");
+
     try {
       const res = await loginUser(data);
 
@@ -125,7 +126,7 @@ export default function LoginForm() {
           <Button
             // disabled={reCaptchaStatus ? false : true}
             type="submit"
-            className="mt-5 w-full bg-[#2058e7]  rounded-[8px] hover:bg-[#4e7bee] cursor-pointer"
+            className="mt-5 w-full bg-[#2058e7]d bg-[#006ce4]  rounded-[8px] hover:bg-[#4e7bee] cursor-pointer"
           >
             {isSubmitting ? "Logging...." : "Login"}
           </Button>

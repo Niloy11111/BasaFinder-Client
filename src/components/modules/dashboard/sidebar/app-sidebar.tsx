@@ -142,19 +142,19 @@ export function AppSidebar() {
                     isActive
                       ? "bg-gray-100"
                       : "text-gray-600 hover:bg-gray-100",
-                    open ? "text-blue-600" : "ml-[5px]"
+                    open ? "text-primary" : "ml-[5px]"
                   )}
                 >
                   <Link href={link.url} className="w-full" scroll={false}>
                     <div className="flex items-center gap-3">
                       <link.icon
                         className={`h-5 w-5 ${
-                          isActive ? "text-blue-600" : "text-gray-600"
+                          isActive ? "text-primary" : "text-gray-600"
                         }`}
                       />
                       <span
                         className={`font-medium ${
-                          isActive ? "text-blue-600" : "text-gray-600"
+                          isActive ? "text-primary" : "text-gray-600"
                         }`}
                       >
                         {link.title}

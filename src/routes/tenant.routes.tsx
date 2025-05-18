@@ -1,21 +1,15 @@
-import {
-  FileUser,
-  Hand,
-  HouseIcon,
-  Settings,
-  SquareTerminal,
-} from "lucide-react";
+import { Dock, House, HouseIcon, Settings, User } from "lucide-react";
 export const tenantsPaths = [
   {
     title: "My Profile",
     url: "/tenant/profile",
-    icon: SquareTerminal,
+    icon: User,
     isActive: true,
   },
   {
     title: "Applications",
     url: "/tenant/applications",
-    icon: FileUser,
+    icon: Dock,
     isActve: true,
   },
   {
@@ -31,6 +25,6 @@ export const tenantsPaths = [
   {
     title: "Go Home",
     url: "/",
-    icon: Hand,
+    icon: House,
   },
 ];

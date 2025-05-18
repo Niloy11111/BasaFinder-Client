@@ -49,6 +49,7 @@ const ApplicationModal = ({
     try {
       const modifiedData = {
         ...data,
+        message: data?.message || "Not Given",
         status: "Pending",
         property: propertyId,
         tenant: authUser?.userId,

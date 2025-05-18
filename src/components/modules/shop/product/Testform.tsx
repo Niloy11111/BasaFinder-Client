@@ -14,7 +14,7 @@ import {
 import { updateUserStatus } from "@/services/User";
 import { IUser } from "@/types";
 
-import { ArrowDownToLine, Check, Download, Trash } from "lucide-react";
+import { Check, Download, SquarePen, Trash, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -139,7 +139,7 @@ const UsersPage = ({ users }: { users: IUser[] }) => {
                         className={`cursor-pointer border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex 
                       items-center justify-center font-semibold hover:bg-primary-700 hover:text-primary-50`}
                       >
-                        <ArrowDownToLine className="w-4 h-4 mr-1" />
+                        <SquarePen className="w-4 h-4 mr-2" />
                         Edit Role
                       </button>
                       <UserRoleEditModal
@@ -154,7 +154,7 @@ const UsersPage = ({ users }: { users: IUser[] }) => {
                         className={`cursor-pointer border border-gray-300 text-gray-700 py-2 px-4 rounded-md flex 
                       items-center justify-center font-semibold hover:bg-primary-700 hover:text-primary-50`}
                       >
-                        <ArrowDownToLine className="w-4 h-4 mr-1" />
+                        <Trash2 className="w-4 h-4 mr-2" />
                         Delete User
                       </button>
 

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "commit": "git add . && git commit -m \"deployed to vercel\" && git push"
+    "commit": "git add . && git commit -m \"re-design some component for better user interface\" && git push"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",

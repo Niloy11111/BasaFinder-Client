@@ -7,8 +7,8 @@ const AboutPage = () => {
       <div className="h-[60px]"></div>
       <ImagePreviews images={["/story-2.avif", "/story-1.avif"]} />
 
-      <section className="contact-info mb-8">
-        <h2 className="underline my-10 text-center text-[45px] font-semibold">
+      <section className=" mb-8">
+        <h2 className="mt-24 mb-8 te text-center text-[45px] font-semibold">
           Our Misson
         </h2>
 
@@ -24,9 +24,9 @@ const AboutPage = () => {
           priorities, and budget to match you with the perfect place to call
           home. With a wide selection of verified listings in top neighborhoods,
           we ensure that every property on our platform meets strict quality
-          standards. From cozy studios to spacious family homes, we offer
-          something for everyone—because your lifestyle matters. We also
-          recognize that every renter’s journey is different. That’s why we
+          standards. <br /> <br /> From cozy studios to spacious family homes,
+          we offer something for everyone—because your lifestyle matters. We
+          also recognize that every renter’s journey is different. That’s why we
           provide flexible rental options designed to suit your timeframe,
           financial situation, and living needs. Whether you are looking for
           short-term stays or long-term commitments, our platform is built to
@@ -39,7 +39,7 @@ const AboutPage = () => {
         </p>
       </section>
 
-      <section className="my-10 flex lg:flex-row flex-col items-center justify-center gap-10">
+      <section className="my-24 flex lg:flex-row flex-col items-center justify-center gap-10">
         <div>
           <Image
             src="https://www.houselogic.com/wp-content/uploads/2016/08/tax-deductions-rental-home-standard_1f79136f45639b6e63f8a93b18c9fdcc.jpg"
@@ -70,7 +70,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <section className="contact-info mb-12">
+      <section className=" mb-12">
         <h2 className="  text-center text-[45px] font-semibold">Contact Us</h2>
 
         <p className="text-center text-d1 mb-4">
@@ -78,10 +78,10 @@ const AboutPage = () => {
         </p>
         <ul className="flex  lg:flex-row flex-col py-10 text-center  justify-center items-center gap-5 bg-primary text-white text-2xl lg:h-[150px] rounded-xl w-3/4 mx-auto">
           <li>
-            Email: <a href="mailto:info@rentPoint.com">info@rentPoint.com</a>
+            Email: <a href="mailto:info@rentMode.com">info@rentMode.com</a>
           </li>
           <li>Phone: +123 456 789</li>
-          <li>Address: 123 RentPoint Dublin, Ireland, </li>
+          <li>Address: 123 Dublin, Ireland, </li>
         </ul>
       </section>
     </>

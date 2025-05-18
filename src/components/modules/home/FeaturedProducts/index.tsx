@@ -10,10 +10,10 @@ const FeaturedProducts = async () => {
     <div className=" bg-opacity-50 py-20">
       <div className="container mx-auto">
         <div className="flex items-center  justify-between mb-5">
-          <h2 className="font-bold text-2xl">Featured Products</h2>
+          <h2 className="font-bold text-2xl">Featured Properties</h2>
           <Link href="/search">
             <Button variant="outline" className="rounded-full">
-              All Home
+              All Collection
             </Button>
           </Link>
         </div>

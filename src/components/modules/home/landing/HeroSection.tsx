@@ -56,7 +56,7 @@ const HeroSection = () => {
   return (
     <div className="relative h-screen  ">
       <Image
-        src="/landing-hero.png"
+        src="/landing-hero.jpg"
         alt="Rentmode Rental Platform Hero Section"
         fill
         className="object-cover object-center"
@@ -72,11 +72,11 @@ const HeroSection = () => {
         >
           <div className="max-w-4xl mx-auto px-16 sm:px-12">
             <h1 className="text-5xl font-extrabold text-white mb-4">
-              Start your journey to finding the perfect place
+              Take the first step toward your dream apartment.
             </h1>
             <p className="text-xl text-white mb-8">
-              Explore our wide range of rental properties tailored to fit your
-              lifestyle and needs!
+              Browse our full list of rental homes designed to match your
+              lifestyle and personal preferences!
             </p>
 
             <div className="flex justify-center">
@@ -84,14 +84,14 @@ const HeroSection = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by city, neighborhood or address"
+                placeholder="Search by city or address"
                 className="w-full max-w-lg rounded-none rounded-l-xl border-none bg-white h-12"
               />
               <Button
                 onClick={handleLocationSearch}
-                className="bg-secondary-500 text-white rounded-none rounded-r-xl border-none hover:bg-secondary-600 h-12"
+                className="bg-secondary-500 text-white rounded-none rounded-r-xl  border-none hover:bg-secondary-600 h-12 "
               >
-                Search
+                Find it
               </Button>
             </div>
           </div>

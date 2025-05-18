@@ -196,7 +196,7 @@ export default function RegisterForm() {
           <Button
             disabled={!!passwordConfirm && password !== passwordConfirm}
             type="submit"
-            className="mt-5 w-full bg-[#2058e7]  rounded-[8px] hover:bg-[#4e7bee] cursor-pointer"
+            className="mt-5 w-full bg-primary  rounded-[8px] hover:bg-primary/80 cursor-pointer"
           >
             {isSubmitting ? "Registering...." : "Register"}
           </Button>

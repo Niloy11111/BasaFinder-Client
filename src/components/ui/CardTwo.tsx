@@ -14,47 +14,49 @@ const CardTwo = ({
   );
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-lg w-full mb-5">
+    <div className="bg-white border p-3 rounded overflow-hidden shadow-lg w-full mb-5">
       <div className="relative">
-        <div className="w-full h-48 relative">
+        <div className="w-full h-64 relative">
           <Image
             src={imgSrc}
             alt={property.name}
             fill
-            className="object-cover"
+            className="object-cover rounded"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             onError={() => setImgSrc("/placeholder.jpg")}
           />
         </div>
         <div className="absolute bottom-4 left-4 flex gap-2">
           {property.isPetsAllowed && (
-            <span className="bg-white/80 text-black text-xs font-semibold px-2 py-1 rounded-full">
+            <span className="bg-[#ebf0f5] text-primary text-xs font-semibold px-2 py-1 rounded-full">
               Pets Allowed
             </span>
           )}
           {property.isParkingIncluded && (
-            <span className="bg-white/80 text-black text-xs font-semibold px-2 py-1 rounded-full">
+            <span className="bg-[#ebf0f5] text-primary text-xs font-semibold px-2 py-1 rounded-full">
               Parking Included
             </span>
           )}
         </div>
 
-        <button className="absolute bottom-4 right-4 bg-white hover:bg-white/90 rounded-full p-2 cursor-pointer"></button>
+        {/* <button className="absolute bottom-4 right-4 bg-white hover:bg-white/90 rounded-full p-2 cursor-pointer">
+          dd
+        </button> */}
       </div>
       <div className="p-4">
-        <h2 className="text-xl font-bold mb-1">
-          {propertyLink ? (
-            <Link
-              href={propertyLink}
-              className="hover:underline hover:text-blue-600"
-              scroll={false}
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold mb-1">{property.name}</h2>
+
+          <Link href={propertyLink} className="" scroll={false}>
+            <button
+              className="cursor-pointer
+           rounded bg-primary hover:bg-primary/80 text-white px-5 py-2"
             >
-              {property.name}
-            </Link>
-          ) : (
-            property.name
-          )}
-        </h2>
+              Details
+            </button>
+          </Link>
+        </div>
+
         <p className="text-gray-600 mb-2">
           {property?.location?.address}, {property?.location?.city}
         </p>
@@ -62,10 +64,11 @@ const CardTwo = ({
           <div className="flex items-center mb-2">
             <Star className="w-4 h-4 text-yellow-400 mr-1" />
             <span className="font-semibold">
-              {property?.averageRating?.toFixed(1)}
+              {/* {property?.averageRating?.toFixed(1)} */}
+              {4.2}
             </span>
             <span className="text-gray-600 ml-1">
-              ({property?.numberOfReviews} Reviews)
+              {/* ({property?.numberOfReviews} Reviews) */}({5} Reviews)
             </span>
           </div>
           <p className="text-lg font-bold mb-3">
@@ -73,7 +76,7 @@ const CardTwo = ({
             <span className="text-gray-600 text-base font-normal"> /month</span>
           </p>
         </div>
-        <hr />
+        <hr className="" />
         <div className="flex justify-between items-center gap-4 text-gray-600 mt-5">
           <span className="flex items-center">
             <Bed className="w-5 h-5 mr-2" />

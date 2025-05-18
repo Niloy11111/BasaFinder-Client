@@ -65,7 +65,7 @@ const NavbarDashboard = () => {
                 alt="Rentmode Logo"
                 width={24}
                 height={24}
-                className="w-6 h-6"
+                className="w-6 h-6 "
               />
               <div className="text-xl font-bold">
                 RENT
@@ -106,7 +106,9 @@ const NavbarDashboard = () => {
         {!isDashboardPage && (
           <div className="flex items-center gap-5">
             <p className="text-primary-200 hidden md:block">
-              Discover your perfect rental apartment with our advanced search
+              {/* Discover your perfect rental apartment with our advanced search
+               */}
+              Find your ideal rental home with our powerful search tools
             </p>
             <Link href="/search">
               {" "}
@@ -184,7 +186,7 @@ const NavbarDashboard = () => {
               <Link href="/login">
                 <Button
                   variant="outline"
-                  className="text-white border-white bg-transparent hover:bg-white hover:text-primary-700 rounded-lg"
+                  className="text-white border-white bg-transparent hover:bg-white hover:text-primary-700 "
                 >
                   Sign In
                 </Button>
@@ -192,7 +194,7 @@ const NavbarDashboard = () => {
               <Link href="/register">
                 <Button
                   variant="secondary"
-                  className="text-white bg-secondary-600 hover:bg-white hover:text-primary-700 rounded-lg"
+                  className="text-white bg-secondary-600 hover:bg-white hover:text-primary-700 "
                 >
                   Sign Up
                 </Button>

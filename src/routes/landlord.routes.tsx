@@ -1,21 +1,19 @@
-import { Dock, House, Landmark, Settings, User } from "lucide-react";
+import { Building, House, Rows3, Settings, User } from "lucide-react";
 export const landlordPaths = [
   {
     title: "My Profile",
     url: "/landlord/profile",
     icon: User,
-    isActive: true,
   },
   {
     title: "Manage Listing",
     url: "/landlord/list/rental",
-    icon: Landmark,
+    icon: Building,
   },
   {
     title: "Applications",
     url: "/landlord/applications",
-    icon: Dock,
-    isActive: true,
+    icon: Rows3,
   },
 
   {

@@ -6,15 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
 import { addFlashSale } from "@/services/FlashSale";
 import { Dispatch, SetStateAction } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -60,10 +52,11 @@ const DiscountModal = ({ selectedIds, setSelectedIds }: TModalProps) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add Flash Sale</DialogTitle>
+          {/* <DialogTitle>Add Flash Sale</DialogTitle> */}
+          <DialogTitle>This Features Coming Soon</DialogTitle>
         </DialogHeader>
 
-        <Form {...form}>
+        {/* <Form {...form}>
           <form
             className="flex items-center gap-2"
             onSubmit={form.handleSubmit(onSubmit)}
@@ -91,7 +84,7 @@ const DiscountModal = ({ selectedIds, setSelectedIds }: TModalProps) => {
               {isSubmitting ? "Adding...." : "Add"}
             </Button>
           </form>
-        </Form>
+        </Form> */}
       </DialogContent>
     </Dialog>
   );

@@ -30,6 +30,7 @@ import {
   useFieldArray,
   useFormContext,
 } from "react-hook-form";
+import ReactSelect from "react-select";
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
@@ -48,6 +49,7 @@ interface FormFieldProps {
     | "textarea"
     | "number"
     | "select"
+    | "multiple-select"
     | "switch"
     | "password"
     | "file"
@@ -123,6 +125,70 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
               ))}
             </SelectContent>
           </Select>
+        );
+      case "multiple-select":
+        return (
+          <ReactSelect
+            isMulti
+            options={options}
+            value={options?.filter((opt) => field.value?.includes(opt.value))}
+            onChange={(selected) => {
+              const values = selected.map((s) => s.value);
+              field.onChange(values);
+            }}
+            placeholder={null}
+            className="w-full text-sm "
+            classNamePrefix="custom-select"
+            styles={{
+              control: (base) => ({
+                ...base,
+                lineHeight: 1,
+                borderColor: "#e5e7eb",
+                boxShadow: "none",
+                "&:hover": {
+                  borderColor: "#e5e7eb",
+                },
+              }),
+
+              option: (base, { isFocused }) => ({
+                ...base,
+                backgroundColor: isFocused ? "#f3f4f6" : "white",
+                cursor: "pointer",
+                height: "30px",
+
+                display: "flex",
+                alignItems: "center",
+              }),
+
+              multiValue: (base) => ({
+                ...base,
+                color: "#444",
+                backgroundColor: "#f1f0ef",
+              }),
+              multiValueLabel: (base) => ({
+                ...base,
+                color: "black",
+                fontSize: "0.875rem",
+              }),
+              multiValueRemove: (base) => ({
+                ...base,
+                color: "#4338ca",
+                cursor: "pointer",
+                ":hover": {
+                  backgroundColor: "#c7d2fe",
+                  color: "#3730a3",
+                },
+              }),
+            }}
+            theme={(theme) => ({
+              ...theme,
+              colors: {
+                ...theme.colors,
+                primary25: "#f3f4f6", // hover background
+                primary: "#f3f4f6", // selected background (this removes the blue)
+              },
+            })}
+          />
         );
       case "switch":
         return (

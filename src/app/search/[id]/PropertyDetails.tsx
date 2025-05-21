@@ -37,7 +37,7 @@ const PropertyDetails = ({ propertyId }: { propertyId: string }) => {
       <div>
         <h2 className="text-xl font-semibold my-3">Property Amenities</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {/* {property?.amenities?.split(",")?.map((amenity: AmenityEnum) => {
+          {property?.amenities?.split(",")?.map((amenity: AmenityEnum) => {
             const Icon = AmenityIcons[amenity as AmenityEnum] || HelpCircle;
             return (
               <div
@@ -50,14 +50,7 @@ const PropertyDetails = ({ propertyId }: { propertyId: string }) => {
                 </span>
               </div>
             );
-          })} */}
-
-          <div className="flex flex-col items-center border rounded-xl py-8 px-4">
-            <Icon className="w-8 h-8 mb-2 text-gray-700" />
-            <span className="text-sm text-center text-gray-700">
-              {formatEnumString(property?.amenities)}
-            </span>
-          </div>
+          })}
         </div>
       </div>
       {/* Highlights */}
@@ -66,7 +59,7 @@ const PropertyDetails = ({ propertyId }: { propertyId: string }) => {
           Highlights
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-4 w-full">
-          {/* {property?.highlights?.split(",")?.map((highlight: HighlightEnum) => {
+          {property?.highlights?.split(",")?.map((highlight: HighlightEnum) => {
             const Icon =
               HighlightIcons[highlight as HighlightEnum] || HelpCircle;
             return (
@@ -80,14 +73,14 @@ const PropertyDetails = ({ propertyId }: { propertyId: string }) => {
                 </span>
               </div>
             );
-          })} */}
+          })}
 
-          <div className="flex flex-col items-center border rounded-xl py-8 px-4">
+          {/* <div className="flex flex-col items-center border rounded-xl py-8 px-4">
             <IconTwo className="w-8 h-8 mb-2 text-primary-600 dark:text-primary-300" />
             <span className="text-sm text-center text-primary-600 dark:text-primary-300">
               {formatEnumString(property?.highlights)}
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* Tabs Section */}

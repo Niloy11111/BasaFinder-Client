@@ -28,16 +28,16 @@ const NewProperty = () => {
       isPetsAllowed: true,
       isParkingIncluded: true,
       imageUrls: [],
-      amenities: "",
-      highlights: "",
+      amenities: [],
+      highlights: [],
       beds: 1,
       baths: 1,
       squareFeet: 1000,
-      address: "Back Bay",
-      city: "Boston",
-      state: "MA",
-      country: "USA",
-      postalCode: "02116",
+      address: "",
+      city: "",
+      state: "",
+      country: "",
+      postalCode: "",
     },
   });
 
@@ -50,14 +50,27 @@ const NewProperty = () => {
     const toastId = toast.loading("Property Creating... ");
     const formData = new FormData();
 
+    const formattedAmenities = data?.amenities
+      .join(",")
+      .split(",")
+      .map((a) => a.trim())
+      .join(",");
+    const formattedhighlights = data?.highlights
+      .join(",")
+      .split(",")
+      .map((a) => a.trim())
+      .join(",");
+
     const modifiedData = {
       ...data,
       landlord: user?.userId,
       price: parseFloat(data?.price?.toString()),
       beds: parseFloat(data?.beds?.toString()),
+      amenities: formattedAmenities,
+      highlights: formattedhighlights,
     };
 
-    // console.log("datasdf", modifiedData);
+    console.log("datasdf", modifiedData);
 
     formData.append("data", JSON.stringify(modifiedData));
 
@@ -196,7 +209,7 @@ const NewProperty = () => {
                 <CustomFormField
                   name="amenities"
                   label="Amenities"
-                  type="select"
+                  type="multiple-select"
                   multiple={true}
                   options={Object.keys(AmenityEnum).map((amenity) => ({
                     value: amenity,
@@ -206,7 +219,8 @@ const NewProperty = () => {
                 <CustomFormField
                   name="highlights"
                   label="Highlights"
-                  type="select"
+                  type="multiple-select"
+                  multiple={true}
                   options={Object.keys(HighlightEnum).map((highlight) => ({
                     value: highlight,
                     label: highlight,
@@ -236,25 +250,32 @@ const NewProperty = () => {
                 Additional Information
               </h2>
 
-              <CustomFormField name="city" label="City" />
+              <CustomFormField name="city" placeholder="Boston" label="City" />
               <div className="flex justify-between gap-4">
                 <CustomFormField
                   name="address"
+                  placeholder="Back Bay"
                   label="Address"
                   className="w-full"
                 />
                 <CustomFormField
                   name="state"
+                  placeholder="MA"
                   label="State"
                   className="w-full"
                 />
                 <CustomFormField
                   name="postalCode"
+                  placeholder="02116"
                   label="Postal Code"
                   className="w-full"
                 />
               </div>
-              <CustomFormField name="country" label="Country" />
+              <CustomFormField
+                name="country"
+                placeholder="USA"
+                label="Country"
+              />
             </div>
 
             <Button

@@ -22,7 +22,10 @@ export const metadata: Metadata = {
   title: "BasaFinder",
   description:
     "Discover, compare, and book rental properties with ease on BasaFinder.",
-  icons: { icon: "/favicon1.png" },
+  icons: {
+    icon: "/favicon1.png",
+    shortcut: "/favicon1.png",
+  },
 };
 
 export default function RootLayout({

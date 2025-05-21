@@ -40,28 +40,36 @@ const FooterSection = () => {
             <a
               href="#"
               aria-label="Facebook"
-              className="hover:text-primary-600"
+              className="text-secondary-600 hover:text-secondary-600/60"
             >
-              <FontAwesomeIcon icon={faFacebook} className="h-6 w-6" />
+              <FontAwesomeIcon icon={faFacebook} className=" h-6 w-6" />
             </a>
             <a
               href="#"
               aria-label="Instagram"
-              className="hover:text-primary-600"
+              className="text-secondary-600 hover:text-secondary-600/60"
             >
               <FontAwesomeIcon icon={faInstagram} className="h-6 w-6" />
             </a>
-            <a href="#" aria-label="Twitter" className="hover:text-primary-600">
+            <a
+              href="#"
+              aria-label="Twitter"
+              className="text-secondary-600 hover:text-secondary-600/60"
+            >
               <FontAwesomeIcon icon={faTwitter} className="h-6 w-6" />
             </a>
             <a
               href="#"
               aria-label="Linkedin"
-              className="hover:text-primary-600"
+              className="text-secondary-600 hover:text-secondary-600/60"
             >
               <FontAwesomeIcon icon={faLinkedin} className="h-6 w-6" />
             </a>
-            <a href="#" aria-label="Youtube" className="hover:text-primary-600">
+            <a
+              href="#"
+              aria-label="Youtube"
+              className="text-secondary-600 hover:text-secondary-600/60"
+            >
               <FontAwesomeIcon icon={faYoutube} className="h-6 w-6" />
             </a>
           </div>

@@ -4,13 +4,11 @@ export const tenantsPaths = [
     title: "My Profile",
     url: "/tenant/profile",
     icon: User,
-    isActive: true,
   },
   {
     title: "Applications",
     url: "/tenant/applications",
     icon: Dock,
-    isActve: true,
   },
   {
     title: "Residences",

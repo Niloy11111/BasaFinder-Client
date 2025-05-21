@@ -130,7 +130,7 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarMenu>
-          {sidebarItems?.map((link) => {
+          {sidebarItems?.map((link, index) => {
             const isActive = pathname === link.url;
 
             return (
@@ -138,7 +138,7 @@ export function AppSidebar() {
                 <SidebarMenuButton
                   asChild
                   className={cn(
-                    "flex items-center px-7 py-7",
+                    "flex items-center px-7 py-7 rounded-none",
                     isActive
                       ? "bg-gray-100"
                       : "text-gray-600 hover:bg-gray-100",
@@ -148,10 +148,13 @@ export function AppSidebar() {
                   <Link href={link.url} className="w-full" scroll={false}>
                     <div className="flex items-center gap-3">
                       <link.icon
-                        className={`h-5 w-5 ${
-                          isActive ? "text-primary" : "text-gray-600"
-                        }`}
+                        className={`${
+                          !open && (index === 2 || index === 3)
+                            ? "h-3 w-3"
+                            : "h-5 w-5"
+                        } ${isActive ? "text-primary" : "text-gray-600"}`}
                       />
+
                       <span
                         className={`font-medium ${
                           isActive ? "text-primary" : "text-gray-600"

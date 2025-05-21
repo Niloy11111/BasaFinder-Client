@@ -95,7 +95,11 @@ export default function RegisterForm() {
               <FormItem>
                 <FormLabel className="mt-8">Name</FormLabel>
                 <FormControl>
-                  <Input {...field} value={field.value || ""} />
+                  <Input
+                    placeholder="Create an username"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,7 +112,12 @@ export default function RegisterForm() {
               <FormItem>
                 <FormLabel className="">Email</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} value={field.value || ""} />
+                  <Input
+                    placeholder="Enter your email address"
+                    type="email"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -122,6 +131,7 @@ export default function RegisterForm() {
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
                   <Input
+                    placeholder="Type your phone number"
                     type="phoneNumber"
                     {...field}
                     value={field.value || ""}
@@ -168,7 +178,12 @@ export default function RegisterForm() {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} value={field.value || ""} />
+                  <Input
+                    placeholder="Create a password"
+                    type="password"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -181,7 +196,12 @@ export default function RegisterForm() {
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} value={field.value || ""} />
+                  <Input
+                    placeholder="Confirm your password"
+                    type="password"
+                    {...field}
+                    value={field.value || ""}
+                  />
                 </FormControl>
 
                 {passwordConfirm && password !== passwordConfirm ? (

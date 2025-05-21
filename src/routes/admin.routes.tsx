@@ -4,7 +4,6 @@ export const adminPaths = [
     title: "My Profile",
     url: "/admin/profile",
     icon: User,
-    isActive: true,
   },
   {
     title: "Users Management",

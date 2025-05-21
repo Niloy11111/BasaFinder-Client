@@ -104,13 +104,13 @@ const NavbarDashboard = () => {
           )}
         </div>
         {!isDashboardPage && (
-          <div className="flex items-center gap-5">
-            <p className="text-primary-200 hidden md:block">
+          <div className="md:flex items-center gap-5  hidden ">
+            <p className="text-primary-200 hidden lg:block">
               {/* Discover your perfect rental apartment with our advanced search
                */}
               Find your ideal rental home with our powerful search tools
             </p>
-            <Link href="/search">
+            <Link href="/search" className="md:mr-0 sm:mr-5">
               {" "}
               <Button variant="outline">Properties</Button>
             </Link>
@@ -146,6 +146,36 @@ const NavbarDashboard = () => {
                   </p>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-white text-primary-700">
+                  <DropdownMenuItem
+                    className="cursor-pointer sm:hidden block hover:!bg-primary-700 hover:!text-primary-100 font-bold"
+                    onClick={() =>
+                      router.push(
+                        userInfo?.role?.toLowerCase() === "admin"
+                          ? "/admin/users"
+                          : userInfo?.role?.toLowerCase() === "landlord"
+                          ? "/landlord/list/rental"
+                          : "/tenant/applications",
+                        { scroll: false }
+                      )
+                    }
+                  >
+                    Properties
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer sm:hidden block hover:!bg-primary-700 hover:!text-primary-100 font-bold"
+                    onClick={() =>
+                      router.push(
+                        userInfo?.role?.toLowerCase() === "admin"
+                          ? "/admin/users"
+                          : userInfo?.role?.toLowerCase() === "landlord"
+                          ? "/landlord/list/rental"
+                          : "/tenant/applications",
+                        { scroll: false }
+                      )
+                    }
+                  >
+                    Our Story
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer hover:!bg-primary-700 hover:!text-primary-100 font-bold"
                     onClick={() =>

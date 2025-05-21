@@ -20,7 +20,7 @@ const FeaturedProducts = async () => {
 
         <div className="flex">
           <div className="p-4 w-full">
-            <div className="grid grid-cols-3 gap-5">
+            <div className="grid lg:grid-cols-3 gap-5">
               {products?.slice(0, 6).map((property: IProduct) => (
                 <CardTwo
                   key={property._id}

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "commit": "git add . && git commit -m \"our story design for better view \" && git push"
+    "commit": "git add . && git commit -m \"Made a full documented readme file to discuss how to run the proeject \" && git push"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",

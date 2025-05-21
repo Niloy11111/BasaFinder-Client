@@ -21,13 +21,19 @@ const FeaturedProducts = async () => {
         <div className="flex">
           <div className="p-4 w-full">
             <div className="grid grid-cols-3 gap-5">
-              {products?.map((property: IProduct) => (
+              {products?.slice(0, 6).map((property: IProduct) => (
                 <CardTwo
                   key={property._id}
                   property={property}
                   propertyLink={`/search/${property._id}`}
                 />
               ))}
+            </div>
+
+            <div className="w-[200px] rounded py-3.5 flex justify-center items-center  bg-secondary-400 mx-auto mt-10">
+              <Link href="/search" className=" hover:text-white  ">
+                More Properties
+              </Link>
             </div>
           </div>
         </div>

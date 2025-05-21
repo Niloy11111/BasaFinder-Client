@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "commit": "git add . && git commit -m \"updated addProdcuctForm to accept multiple selection for amenities and highlights for appartment\" && git push"
+    "commit": "git add . && git commit -m \"our story design for better view \" && git push"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",

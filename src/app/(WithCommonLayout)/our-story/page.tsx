@@ -39,10 +39,17 @@ const AboutPage = () => {
         </p>
       </section>
 
-      <section className="my-24 flex lg:flex-row flex-col items-center justify-center gap-10">
-        <div>
+      <section className="my-24 flex lg:flex-col flex-col items-center justify-center gap-10">
+        <div className="flex lg:flex-row flex-col gap-5">
           <Image
             src="https://www.houselogic.com/wp-content/uploads/2016/08/tax-deductions-rental-home-standard_1f79136f45639b6e63f8a93b18c9fdcc.jpg"
+            alt=""
+            width={500}
+            height={500}
+            className="rounded"
+          />
+          <Image
+            src="https://images.pexels.com/photos/269077/pexels-photo-269077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt=""
             width={500}
             height={500}
@@ -70,13 +77,15 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <section className=" mb-12">
-        <h2 className="  text-center text-[45px] font-semibold">Contact Us</h2>
+      <section className=" ">
+        <h2 className="  text-center text-[45px] mt-16 font-semibold">
+          Contact Us
+        </h2>
 
-        <p className="text-center text-d1 mb-4">
+        <p className="text-center text-d1 mb-10">
           If you have any questions, feel free to get in touch with us:
         </p>
-        <ul className="flex  lg:flex-row flex-col py-10 text-center  justify-center items-center gap-5 bg-primary text-white text-2xl lg:h-[150px] rounded-xl w-3/4 mx-auto">
+        <ul className="flex  lg:flex-row flex-col py-3 text-center  justify-center items-center gap-5 bg-primary text-white text-2xl lg:h-[100px] ">
           <li>
             Email: <a href="mailto:info@rentMode.com">info@rentMode.com</a>
           </li>

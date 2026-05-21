@@ -102,11 +102,11 @@ const HeroSection = () => {
           transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto mb-10"
         >
-          <h1 className="text-[32px] 2xs:text-[38px] md:text-5xl lg:text-[62px] font-semibold text-white  mb-2">
+          <h1 className="text-[32px] 2xs:text-[38px] leading-[40px] md:text-5xl md:leading-none lg:text-[62px] font-semibold  text-white  mb-2">
             Take the first step toward your <br className="hidden md:block" />
             <span className="text-[#f6920a]">dream apartment</span>
           </h1>
-          <p className="text-base md:text-lg text-gray-200 font-light max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-gray-200 font-light max-w-2xl mx-auto hidden sm:block">
             Browse our full list of rental homes designed to match your
             lifestyle and personal preferences.
           </p>
@@ -179,7 +179,7 @@ const HeroSection = () => {
             {/* Search Button */}
             <button
               onClick={handleLocationSearch}
-              className="w-full md:w-auto cursor-pointer bg-[#f6920a] hover:bg-[#e08309] active:bg-[#c97608] text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center transition-colors shadow-lg shadow-orange-500/30 flex-shrink-0 gap-2"
+              className="w-full md:w-auto cursor-pointer bg-[#f6920a] hover:bg-[#e08309] active:bg-[#c97608] text-white px-8 py-3 sm:py-4 rounded-xl font-bold flex items-center justify-center transition-colors shadow-lg shadow-orange-500/30 flex-shrink-0 gap-2 "
             >
               <Search className="w-5 h-5" />
               <span>Search</span>

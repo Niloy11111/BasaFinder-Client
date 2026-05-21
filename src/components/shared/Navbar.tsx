@@ -184,7 +184,7 @@ const Navbar = () => {
                   <DropdownMenu>
                     <DropdownMenuTrigger className="flex items-center gap-2 focus:outline-none">
                       <Avatar className="w-8 h-8">
-                        <AvatarFallback className="bg-[#f6920a] text-white text-sm font-semibold">
+                        <AvatarFallback className="bg-[#f6920a] text-white text-sm font-semibold cursor-pointer">
                           {userInfo.role?.[0].toUpperCase()}
                         </AvatarFallback>
                         <AvatarImage src={userInfo?.photo} />
@@ -259,7 +259,7 @@ const Navbar = () => {
               {!isDashboardPage && (
                 <button
                   onClick={() => setMobileMenu(!mobileMenu)}
-                  className={`lg:hidden p-2 rounded-lg transition-colors ${
+                  className={`lg:hidden cursor-pointer p-2 rounded-lg transition-colors ${
                     hasSolidBg
                       ? "text-gray-700 hover:bg-gray-100"
                       : "text-white hover:bg-white/10"
@@ -307,7 +307,7 @@ const Navbar = () => {
                     setMobileMenu(false);
                     if (link.href === "/" && isPropertiesPage) handleGoHome();
                   }}
-                  className={`w-full text-left text-sm font-medium px-3 py-3 rounded-lg transition-colors hover:text-[#f6920a] hover:bg-orange-50 ${
+                  className={`w-full  cursor-pointer text-left text-sm font-medium px-3 py-3 rounded-lg transition-colors hover:text-[#f6920a] hover:bg-orange-50 ${
                     link.active
                       ? "text-[#f6920a] bg-orange-50"
                       : "text-gray-600"
@@ -338,9 +338,9 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-3 px-3 py-3 mb-2 bg-gray-50 rounded-xl">
-                <Avatar className="w-9 h-9">
-                  <AvatarFallback className="bg-[#f6920a] text-white text-sm font-semibold">
+              <div className="flex items-center gap-3 px-3 py-3 mb-2 bg-gray-50 rounded-xl ">
+                <Avatar className="w-9 h-9 ">
+                  <AvatarFallback className="cursor-pointer bg-[#f6920a] text-white text-sm font-semibold">
                     {userInfo.role?.[0].toUpperCase()}
                   </AvatarFallback>
                   <AvatarImage src={userInfo?.photo} />
@@ -365,7 +365,7 @@ const Navbar = () => {
                         : "/tenant/profile",
                   );
                 }}
-                className="w-full text-left text-sm font-semibold px-3 py-3 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-[#f6920a] transition-colors"
+                className="w-full cursor-pointer text-left text-sm font-semibold px-3 py-3 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-[#f6920a] transition-colors"
               >
                 Go to Dashboard
               </button>
@@ -374,7 +374,7 @@ const Navbar = () => {
                   setMobileMenu(false);
                   router.push(`/${userInfo.role?.toLowerCase()}/settings`);
                 }}
-                className="w-full text-left text-sm px-3 py-3 rounded-lg text-gray-600 hover:bg-orange-50 hover:text-[#f6920a] transition-colors"
+                className="w-full cursor-pointer text-left text-sm px-3 py-3 rounded-lg text-gray-600 hover:bg-orange-50 hover:text-[#f6920a] transition-colors"
               >
                 Settings
               </button>
@@ -383,7 +383,7 @@ const Navbar = () => {
                   setMobileMenu(false);
                   handleSignOut();
                 }}
-                className="w-full text-left text-sm px-3 py-3 rounded-lg text-red-500 hover:bg-red-50 transition-colors mt-1"
+                className="w-full cursor-pointer text-left text-sm px-3 py-3 rounded-lg text-red-500 hover:bg-red-50 transition-colors mt-1"
               >
                 Sign out
               </button>
